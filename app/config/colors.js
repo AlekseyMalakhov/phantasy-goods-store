@@ -7,4 +7,5 @@ export default {
     secondaryDarkColor: "#c7cc00",
     primaryTextColor: "#ffffff",
     secondaryTextColor: "#000000",
+    textLight: "grey",
 };

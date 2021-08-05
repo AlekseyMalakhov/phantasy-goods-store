@@ -6,23 +6,47 @@ import colors from "../config/colors";
 const styles = StyleSheet.create({
     card: {
         paddingHorizontal: 0,
+        paddingTop: 5,
+    },
+    title: {
+        fontSize: 20,
+        marginBottom: 5,
+    },
+    button: {
+        marginRight: 10,
+        borderRadius: 0,
+        paddingHorizontal: 30,
+        backgroundColor: colors.primaryDarkColor,
+    },
+    action: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    price: {
+        fontSize: 20,
+        marginLeft: 10,
+    },
+    seller: {
+        color: colors.textLight,
     },
 });
 
-function AppCard(props) {
+function AppCard({ item }) {
     return (
         <Card containerStyle={styles.card}>
-            <Card.Title>HELLO WORLD</Card.Title>
+            <Card.Title style={styles.title}>{item.name}</Card.Title>
             <Card.Divider />
-            <Card.Image source={require("../assets/land.jpg")}></Card.Image>
+            <Card.Image source={item.img}></Card.Image>
             <View style={{ paddingHorizontal: 10 }}>
-                <Text style={{ marginBottom: 10, marginTop: 10 }}>
-                    The idea with React Native Elements is more about component structure than actual design.
+                <Text style={{ marginBottom: 10, marginTop: 10 }} numberOfLines={5}>
+                    {item.description}
                 </Text>
-                <Button
-                    buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor: colors.primaryDarkColor }}
-                    title="VIEW NOW"
-                />
+                <Text style={styles.seller}>{item.seller.name}</Text>
+                <View style={styles.action}>
+                    <Text style={styles.price}>{item.price + "$"}</Text>
+                    <Button buttonStyle={styles.button} title="Buy" />
+                </View>
             </View>
         </Card>
     );
