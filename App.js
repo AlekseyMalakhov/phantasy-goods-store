@@ -24,9 +24,9 @@ export default function App() {
     return (
         <Screen>
             <AppHeader />
-            {/* <CardsList /> */}
-            <ItemScreen item={items[1]} />
-            <BackButton />
+            <CardsList />
+            {/* <ItemScreen item={items[1]} />
+            <BackButton /> */}
         </Screen>
     );
 }

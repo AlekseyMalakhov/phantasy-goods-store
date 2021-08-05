@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Card, Button } from "react-native-elements";
 import colors from "../config/colors";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const styles = StyleSheet.create({
     card: {
@@ -11,6 +12,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         marginBottom: 5,
+        backgroundColor: "blue",
     },
     button: {
         marginRight: 10,
@@ -30,12 +32,24 @@ const styles = StyleSheet.create({
     seller: {
         color: colors.textLight,
     },
+    share: {
+        color: colors.textLight,
+        position: "absolute",
+        fontSize: 25,
+        top: 10,
+        right: 50,
+    },
 });
 
 function AppCard({ item }) {
     return (
         <Card containerStyle={styles.card}>
-            <Card.Title style={styles.title}>{item.name}</Card.Title>
+            <Card.Title style={styles.title}>
+                <View style={{ backgroundColor: "green", flex: 1 }}>
+                    <Text style={styles.title}>{item.name}</Text>
+                    <Icon name="share" style={styles.share}></Icon>
+                </View>
+            </Card.Title>
             <Card.Divider />
             <Card.Image source={item.img}></Card.Image>
             <View style={{ paddingHorizontal: 10 }}>
