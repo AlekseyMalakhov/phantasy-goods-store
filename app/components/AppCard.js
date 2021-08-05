@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Card, Button, Icon } from "react-native-elements";
+import { Card, Button } from "react-native-elements";
 import colors from "../config/colors";
 
 const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginRight: 10,
-        borderRadius: 0,
+        borderRadius: 5,
         paddingHorizontal: 30,
         backgroundColor: colors.primaryDarkColor,
     },
