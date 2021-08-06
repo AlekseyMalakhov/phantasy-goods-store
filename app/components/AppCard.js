@@ -7,12 +7,13 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 const styles = StyleSheet.create({
     card: {
         paddingHorizontal: 0,
-        paddingTop: 5,
+        paddingTop: 0,
+        marginBottom: 20,
     },
     title: {
         fontSize: 20,
         marginBottom: 5,
-        backgroundColor: "blue",
+        marginTop: 5,
     },
     button: {
         marginRight: 10,
@@ -34,10 +35,14 @@ const styles = StyleSheet.create({
     },
     share: {
         color: colors.textLight,
+    },
+    shareButtonContainer: {
+        justifyContent: "center",
+        alignItems: "center",
         position: "absolute",
-        fontSize: 25,
-        top: 10,
-        right: 50,
+        right: 10,
+        width: 45,
+        height: 37,
     },
 });
 
@@ -45,10 +50,7 @@ function AppCard({ item }) {
     return (
         <Card containerStyle={styles.card}>
             <Card.Title style={styles.title}>
-                <View style={{ backgroundColor: "green", flex: 1 }}>
-                    <Text style={styles.title}>{item.name}</Text>
-                    <Icon name="share" style={styles.share}></Icon>
-                </View>
+                <Text>{item.name}</Text>
             </Card.Title>
             <Card.Divider />
             <Card.Image source={item.img}></Card.Image>
@@ -61,6 +63,15 @@ function AppCard({ item }) {
                     <Text style={styles.price}>{item.price + "$"}</Text>
                     <Button buttonStyle={styles.button} title="Buy" />
                 </View>
+            </View>
+            <View style={styles.shareButtonContainer}>
+                <Button
+                    buttonStyle={styles.share}
+                    icon={<Icon name="share" size={25} color={colors.textLight}></Icon>}
+                    type="clear"
+                    containerStyle={{ borderRadius: 22 }}
+                    onPress={() => console.log("share")}
+                />
             </View>
         </Card>
     );
