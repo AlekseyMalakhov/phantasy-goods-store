@@ -25,7 +25,7 @@ export default function App() {
         <Screen>
             <AppHeader />
             <CardsList />
-            {/* <ItemScreen item={items[1]} />
+            {/* <ItemScreen item={items[0]} />
             <BackButton /> */}
         </Screen>
     );

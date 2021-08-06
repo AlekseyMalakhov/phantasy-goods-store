@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Image, Text, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
 import colors from "../config/colors";
-import Icon from "react-native-vector-icons/FontAwesome";
+import ShareButton from "../components/ShareButton";
 
 const styles = StyleSheet.create({
     container: {
@@ -53,7 +53,10 @@ function ItemScreen({ item }) {
                     <Text style={styles.seller}>{item.seller.name}</Text>
                     <View style={styles.action}>
                         <Text style={styles.price}>{item.price + "$"}</Text>
-                        <Button buttonStyle={styles.button} title="Buy" />
+                        <View style={{ flexDirection: "row" }}>
+                            <ShareButton style={{ marginRight: 20 }} />
+                            <Button buttonStyle={styles.button} title="Buy" />
+                        </View>
                     </View>
                 </View>
             </ScrollView>

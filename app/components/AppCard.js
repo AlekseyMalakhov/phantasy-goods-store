@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Card, Button } from "react-native-elements";
 import colors from "../config/colors";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import ShareButton from "./ShareButton";
 
 const styles = StyleSheet.create({
     card: {
@@ -33,16 +33,9 @@ const styles = StyleSheet.create({
     seller: {
         color: colors.textLight,
     },
-    share: {
-        color: colors.textLight,
-    },
     shareButtonContainer: {
-        justifyContent: "center",
-        alignItems: "center",
         position: "absolute",
         right: 10,
-        width: 45,
-        height: 37,
     },
 });
 
@@ -65,13 +58,7 @@ function AppCard({ item }) {
                 </View>
             </View>
             <View style={styles.shareButtonContainer}>
-                <Button
-                    buttonStyle={styles.share}
-                    icon={<Icon name="share" size={25} color={colors.textLight}></Icon>}
-                    type="clear"
-                    containerStyle={{ borderRadius: 22 }}
-                    onPress={() => console.log("share")}
-                />
+                <ShareButton />
             </View>
         </Card>
     );
