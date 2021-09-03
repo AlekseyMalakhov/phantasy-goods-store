@@ -10,6 +10,7 @@ import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "./app/config/colors";
 import BackButton from "./app/components/BackButton";
+import BuyScreen from "./app/screens/BuyScreen";
 
 const styles = StyleSheet.create({
     // container: {
@@ -24,9 +25,10 @@ export default function App() {
     return (
         <Screen>
             <AppHeader />
-            <CardsList />
+            {/* <CardsList /> */}
             {/* <ItemScreen item={items[0]} />
             <BackButton /> */}
+            <BuyScreen items={[items[0], items[1]]} />
         </Screen>
     );
 }

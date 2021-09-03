@@ -8,4 +8,5 @@ export default {
     primaryTextColor: "#ffffff",
     secondaryTextColor: "#000000",
     textLight: "grey",
+    lightGrey: "#e3e3e3",
 };
