@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
+import DeliveryInfo from "../components/DeliveryInfo";
 import OrderTable from "../components/OrderTable/OrderTable";
 
 const styles = StyleSheet.create({
@@ -21,8 +22,7 @@ function BuyScreen({ items }) {
             <ScrollView>
                 <Text style={styles.title}>Order conformation</Text>
                 <OrderTable items={items} />
-                <Text style={styles.title}>Totals</Text>
-                <Text style={styles.title}>Delivery adress</Text>
+                <DeliveryInfo />
                 <Text style={styles.title}>Cancel - Buy</Text>
             </ScrollView>
         </View>

@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import OrderRaw from "./OrderRaw";
 import OrderTableHeader from "./OrderTableHeader";
+import OrderTableTotal from "./OrderTableTotal";
 
 const styles = StyleSheet.create({
     container: {
@@ -17,6 +18,7 @@ function OrderTable({ items }) {
             {items.map((item) => (
                 <OrderRaw item={item} key={item.id} />
             ))}
+            <OrderTableTotal />
         </View>
     );
 }
