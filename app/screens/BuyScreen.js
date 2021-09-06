@@ -6,7 +6,8 @@ import OrderTable from "../components/OrderTable/OrderTable";
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 10,
-        //display: "flex",
+        display: "flex",
+        flex: 1,
         //alignItems: "center",
     },
     title: {
@@ -23,7 +24,6 @@ function BuyScreen({ items }) {
                 <Text style={styles.title}>Order conformation</Text>
                 <OrderTable items={items} />
                 <DeliveryInfo />
-                <Text style={styles.title}>Cancel - Buy</Text>
             </ScrollView>
         </View>
     );

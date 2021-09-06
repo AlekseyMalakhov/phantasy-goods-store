@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
     },
 });
 
-function OrderTableTotal(props) {
+function OrderTableTotal({ total }) {
     return (
         <View style={styles.container}>
             <View style={styles.title}>
                 <Text style={{ fontWeight: "bold" }}>Total</Text>
             </View>
             <View style={styles.cell}>
-                <Text style={{ fontWeight: "bold" }}>1$</Text>
+                <Text style={{ fontWeight: "bold" }}>{total}$</Text>
             </View>
         </View>
     );
