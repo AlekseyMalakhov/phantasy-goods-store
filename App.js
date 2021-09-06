@@ -11,6 +11,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import colors from "./app/config/colors";
 import BackButton from "./app/components/BackButton";
 import BuyScreen from "./app/screens/BuyScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
     // container: {
@@ -21,14 +23,30 @@ const styles = StyleSheet.create({
     // },
 });
 
+function NotificationsScreen({ navigation }) {
+    return (
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Button onPress={() => navigation.goBack()} title="Go back home" />
+        </View>
+    );
+}
+const Drawer = createDrawerNavigator();
+
 export default function App() {
     return (
-        <Screen>
-            <AppHeader />
-            {/* <CardsList /> */}
-            {/* <ItemScreen item={items[0]} />
-            <BackButton /> */}
-            <BuyScreen items={[items[0], items[1]]} />
-        </Screen>
+        // <Screen>
+        //     <AppHeader />
+        //     {/* <CardsList /> */}
+        //     {/* <ItemScreen item={items[0]} />
+        //     <BackButton /> */}
+        //     <BuyScreen items={[items[0], items[1]]} />
+        // </Screen>
+
+        <NavigationContainer>
+            <Drawer.Navigator initialRouteName="BuyScreen">
+                <Drawer.Screen name="BuyScreen" component={BuyScreen} />
+                <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+            </Drawer.Navigator>
+        </NavigationContainer>
     );
 }

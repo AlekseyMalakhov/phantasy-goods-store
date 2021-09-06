@@ -16,8 +16,10 @@ function OrderTable({ items }) {
 
     useEffect(() => {
         let total = 0;
-        for (let i = 0; i < items.length; i++) {
-            total = total + items[i].price;
+        if (items) {
+            for (let i = 0; i < items.length; i++) {
+                total = total + items[i].price;
+            }
         }
         setTotal(total);
     }, []);
@@ -25,9 +27,7 @@ function OrderTable({ items }) {
     return (
         <View style={styles.container}>
             <OrderTableHeader />
-            {items.map((item) => (
-                <OrderRaw item={item} key={item.id} />
-            ))}
+            {items ? items.map((item) => <OrderRaw item={item} key={item.id} />) : null}
             <OrderTableTotal total={total} />
         </View>
     );

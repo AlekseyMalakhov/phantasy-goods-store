@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
 });
 
 function OrderRaw({ item }) {
-    console.log(item);
     return (
         <View style={styles.container}>
             <View style={[styles.cell, styles.flex2]}>
