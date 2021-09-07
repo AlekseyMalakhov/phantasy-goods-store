@@ -13,6 +13,7 @@ import BackButton from "./app/components/BackButton";
 import BuyScreen from "./app/screens/BuyScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import LoginScreen from "./app/screens/LoginScreen";
 
 const styles = StyleSheet.create({
     // container: {
@@ -46,22 +47,27 @@ export default function App() {
         //     <BackButton /> */}
         //     <BuyScreen items={[items[0], items[1]]} />
         // </Screen>
+
+        // <Screen>
+        //     <NavigationContainer>
+        //         <Drawer.Navigator
+        //             initialRouteName="BuyScreen"
+        //             screenOptions={{
+        //                 headerShown: true,
+        //                 header: ({ navigation, route, options }) => <AppHeader navigation={navigation} />,
+        //                 drawerStyle: {
+        //                     marginTop: 58,
+        //                 },
+        //             }}
+        //         >
+        //             <Drawer.Screen name="BuyScreen" component={Buy} />
+        //             <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+        //         </Drawer.Navigator>
+        //     </NavigationContainer>
+        // </Screen>
+
         <Screen>
-            <NavigationContainer>
-                <Drawer.Navigator
-                    initialRouteName="BuyScreen"
-                    screenOptions={{
-                        headerShown: true,
-                        header: ({ navigation, route, options }) => <AppHeader navigation={navigation} />,
-                        drawerStyle: {
-                            marginTop: 58,
-                        },
-                    }}
-                >
-                    <Drawer.Screen name="BuyScreen" component={Buy} />
-                    <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-                </Drawer.Navigator>
-            </NavigationContainer>
+            <LoginScreen />
         </Screen>
     );
 }
