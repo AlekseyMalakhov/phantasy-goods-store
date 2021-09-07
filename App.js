@@ -30,6 +30,11 @@ function NotificationsScreen({ navigation }) {
         </View>
     );
 }
+
+const Buy = ({ navigation }) => {
+    return <BuyScreen items={[items[0], items[1]]} />;
+};
+
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -41,12 +46,22 @@ export default function App() {
         //     <BackButton /> */}
         //     <BuyScreen items={[items[0], items[1]]} />
         // </Screen>
-
-        <NavigationContainer>
-            <Drawer.Navigator initialRouteName="BuyScreen">
-                <Drawer.Screen name="BuyScreen" component={BuyScreen} />
-                <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-            </Drawer.Navigator>
-        </NavigationContainer>
+        <Screen>
+            <NavigationContainer>
+                <Drawer.Navigator
+                    initialRouteName="BuyScreen"
+                    screenOptions={{
+                        headerShown: true,
+                        header: ({ navigation, route, options }) => <AppHeader navigation={navigation} />,
+                        drawerStyle: {
+                            marginTop: 58,
+                        },
+                    }}
+                >
+                    <Drawer.Screen name="BuyScreen" component={Buy} />
+                    <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+                </Drawer.Navigator>
+            </NavigationContainer>
+        </Screen>
     );
 }
