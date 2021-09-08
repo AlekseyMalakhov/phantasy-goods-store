@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ImageBackground } from "react-native";
 import FormInput from "../components/forms/FormInput";
 import { Icon, ThemeProvider, Image, Button } from "react-native-elements";
 import { Formik } from "formik";
@@ -7,11 +7,10 @@ import * as Yup from "yup";
 import colors from "../config/colors";
 
 const styles = StyleSheet.create({
-    container: {
-        display: "flex",
+    background: {
         flex: 1,
+        justifyContent: "flex-end",
         alignItems: "center",
-        backgroundColor: "#212629",
     },
     title: {
         marginVertical: 15,
@@ -21,11 +20,11 @@ const styles = StyleSheet.create({
     logo: {
         width: 200,
         height: 200,
-        marginTop: 50,
     },
     buttons: {
         width: "100%",
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
+        marginBottom: 20,
     },
     button: {
         borderRadius: 5,
@@ -46,8 +45,7 @@ function LoginScreen(props) {
     };
 
     return (
-        <View style={styles.container}>
-            <Image source={require("../assets/logo.png")} style={styles.logo} />
+        <ImageBackground style={styles.background} source={require("../assets/main_screen.jpg")} blurRadius={2}>
             <Formik
                 initialValues={{
                     email: "",
@@ -66,8 +64,7 @@ function LoginScreen(props) {
                                         borderRadius: 5,
                                         borderWidth: 1,
                                         backgroundColor: "white",
-                                        height: 50,
-                                        marginVertical: 10,
+                                        height: 43,
                                     },
                                     placeholderTextColor: colors.textLight,
                                     inputStyle: {
@@ -118,7 +115,7 @@ function LoginScreen(props) {
                     </React.Fragment>
                 )}
             </Formik>
-        </View>
+        </ImageBackground>
     );
 }
 

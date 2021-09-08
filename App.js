@@ -13,6 +13,7 @@ import BackButton from "./app/components/BackButton";
 import BuyScreen from "./app/screens/BuyScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./app/screens/LoginScreen";
 
 const styles = StyleSheet.create({
@@ -24,50 +25,45 @@ const styles = StyleSheet.create({
     // },
 });
 
-function NotificationsScreen({ navigation }) {
-    return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <Button onPress={() => navigation.goBack()} title="Go back home" />
-        </View>
-    );
-}
-
 const Buy = ({ navigation }) => {
     return <BuyScreen items={[items[0], items[1]]} />;
 };
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
+
+const mainStack = () => {
+    return (
+        <Stack.Navigator
+            initialRouteName="BuyScreen"
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <Stack.Screen name="BuyScreen" component={Buy} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        </Stack.Navigator>
+    );
+};
 
 export default function App() {
     return (
-        // <Screen>
-        //     <AppHeader />
-        //     {/* <CardsList /> */}
-        //     {/* <ItemScreen item={items[0]} />
-        //     <BackButton /> */}
-        //     <BuyScreen items={[items[0], items[1]]} />
-        // </Screen>
-
-        // <Screen>
-        //     <NavigationContainer>
-        //         <Drawer.Navigator
-        //             initialRouteName="BuyScreen"
-        //             screenOptions={{
-        //                 headerShown: true,
-        //                 header: ({ navigation, route, options }) => <AppHeader navigation={navigation} />,
-        //                 drawerStyle: {
-        //                     marginTop: 58,
-        //                 },
-        //             }}
-        //         >
-        //             <Drawer.Screen name="BuyScreen" component={Buy} />
-        //             <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-        //         </Drawer.Navigator>
-        //     </NavigationContainer>
-        // </Screen>
-
         <Screen>
-            <LoginScreen />
+            <NavigationContainer>
+                <Drawer.Navigator
+                    initialRouteName="MainScreen"
+                    screenOptions={{
+                        headerShown: true,
+                        header: ({ navigation, route, options }) => <AppHeader navigation={navigation} />,
+                        drawerStyle: {
+                            marginTop: 58,
+                        },
+                    }}
+                >
+                    <Drawer.Screen name="MainScreen" component={mainStack} />
+                    <Drawer.Screen name="LoginScreen" component={LoginScreen} />
+                </Drawer.Navigator>
+            </NavigationContainer>
         </Screen>
     );
 }
