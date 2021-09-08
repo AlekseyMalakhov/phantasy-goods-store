@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
     },
 });
 
-function ItemScreen({ item }) {
+function ItemScreen({ route, navigation }) {
+    const { item } = route.params;
     return (
         <React.Fragment>
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
@@ -55,7 +56,7 @@ function ItemScreen({ item }) {
                         <Text style={styles.price}>{item.price + "$"}</Text>
                         <View style={{ flexDirection: "row" }}>
                             <ShareButton style={{ marginRight: 20 }} />
-                            <Button buttonStyle={styles.button} title="Buy" />
+                            <Button buttonStyle={styles.button} title="Buy" onPress={() => navigation.navigate("BuyScreen", { item })} />
                         </View>
                     </View>
                 </View>

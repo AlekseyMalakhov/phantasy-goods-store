@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, ImageBackground } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import FormInput from "../components/forms/FormInput";
 import { Icon, ThemeProvider, Image, Button } from "react-native-elements";
 import { Formik } from "formik";
@@ -7,24 +7,25 @@ import * as Yup from "yup";
 import colors from "../config/colors";
 
 const styles = StyleSheet.create({
-    background: {
+    container: {
+        display: "flex",
         flex: 1,
-        justifyContent: "flex-end",
         alignItems: "center",
+        backgroundColor: "white",
     },
     title: {
         marginVertical: 15,
         fontSize: 20,
-        color: "white",
+        //color: "white",
     },
     logo: {
         width: 200,
         height: 200,
+        marginTop: 50,
     },
     buttons: {
         width: "100%",
-        paddingHorizontal: 10,
-        marginBottom: 20,
+        paddingHorizontal: 15,
     },
     button: {
         borderRadius: 5,
@@ -39,18 +40,18 @@ const validationSchema = Yup.object().shape({
     password: Yup.string().required().label("Password"),
 });
 
-function LoginScreen({ navigation }) {
-    console.log(navigation);
+function RegisterScreen({ navigation }) {
     const handleSubmit = (e) => {
         console.log(e);
     };
 
     return (
-        <ImageBackground style={styles.background} source={require("../assets/main_screen.jpg")} blurRadius={2}>
+        <View style={styles.container}>
             <Formik
                 initialValues={{
                     email: "",
                     password: "",
+                    repeatPassword: "",
                 }}
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
@@ -66,6 +67,7 @@ function LoginScreen({ navigation }) {
                                         borderWidth: 1,
                                         backgroundColor: "white",
                                         height: 43,
+                                        marginVertical: 10,
                                     },
                                     placeholderTextColor: colors.textLight,
                                     inputStyle: {
@@ -75,7 +77,7 @@ function LoginScreen({ navigation }) {
                                 },
                             }}
                         >
-                            <Text style={styles.title}>Sign in</Text>
+                            <Text style={styles.title}>Create account</Text>
                             <FormInput
                                 placeholder="Email"
                                 name="email"
@@ -102,27 +104,31 @@ function LoginScreen({ navigation }) {
                                 autoCorrect={false}
                                 leftIcon={<Icon name="lock" type="simple-line-icon" style={{ marginLeft: 10 }} color={colors.textLight} size={25} />}
                             />
+                            <FormInput
+                                placeholder="Repeat password"
+                                name="repeatPassword"
+                                keyboardType="default"
+                                autoCapitalize="none"
+                                secureTextEntry={true}
+                                autoCorrect={false}
+                                leftIcon={<Icon name="lock" type="simple-line-icon" style={{ marginLeft: 10 }} color={colors.textLight} size={25} />}
+                            />
                         </ThemeProvider>
 
                         <View style={styles.buttons}>
                             <Button
                                 containerStyle={{ marginTop: 10, marginBottom: 25 }}
                                 buttonStyle={[styles.button, styles.buy]}
-                                title="Login"
+                                title="Create account"
                                 onPress={handleSubmit}
                             />
-                            <Button
-                                buttonStyle={styles.button}
-                                title="Register"
-                                type="outline"
-                                onPress={() => navigation.navigate("RegisterScreen")}
-                            />
+                            <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={() => navigation.navigate("LoginScreen")} />
                         </View>
                     </React.Fragment>
                 )}
             </Formik>
-        </ImageBackground>
+        </View>
     );
 }
 
-export default LoginScreen;
+export default RegisterScreen;

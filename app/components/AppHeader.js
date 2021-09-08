@@ -12,7 +12,12 @@ function AppHeader({ navigation }) {
             backgroundColor={colors.primaryColor}
             leftComponent={{ icon: "menu", color: "#fff", iconStyle: { color: "#fff" }, onPress: () => navigation.toggleDrawer() }}
             centerComponent={AppTitleIcon}
-            rightComponent={{ icon: "cart-outline", type: "material-community", color: "#fff" }}
+            rightComponent={{
+                icon: "cart-outline",
+                type: "material-community",
+                color: "#fff",
+                onPress: () => navigation.navigate("BuyScreen"),
+            }}
         />
     );
 }

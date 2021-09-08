@@ -15,6 +15,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./app/screens/LoginScreen";
+import RegisterScreen from "./app/screens/RegisterScreen";
 
 const styles = StyleSheet.create({
     // container: {
@@ -32,16 +33,31 @@ const Buy = ({ navigation }) => {
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
-const mainStack = () => {
+const AppNavigator = () => {
     return (
         <Stack.Navigator
-            initialRouteName="BuyScreen"
+            initialRouteName="CardsList"
             screenOptions={{
                 headerShown: false,
             }}
         >
             <Stack.Screen name="BuyScreen" component={Buy} />
+            <Stack.Screen name="CardsList" component={CardsList} />
+            <Stack.Screen name="ItemScreen" component={ItemScreen} />
+        </Stack.Navigator>
+    );
+};
+
+const AuthNavigator = () => {
+    return (
+        <Stack.Navigator
+            initialRouteName="LoginScreen"
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         </Stack.Navigator>
     );
 };
@@ -60,8 +76,12 @@ export default function App() {
                         },
                     }}
                 >
-                    <Drawer.Screen name="MainScreen" component={mainStack} />
+                    <Drawer.Screen name="Items" component={AppNavigator} />
+                    <Drawer.Screen name="Account" component={AuthNavigator} />
+                    {/* <Drawer.Screen name="BuyScreen" component={Buy} />
                     <Drawer.Screen name="LoginScreen" component={LoginScreen} />
+                    <Drawer.Screen name="RegisterScreen" component={RegisterScreen} />
+                    <Drawer.Screen name="CardsList" component={CardsList} /> */}
                 </Drawer.Navigator>
             </NavigationContainer>
         </Screen>

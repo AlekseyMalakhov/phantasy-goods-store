@@ -39,14 +39,14 @@ const styles = StyleSheet.create({
     },
 });
 
-function AppCard({ item }) {
+function AppCard({ item, navigation }) {
     return (
         <Card containerStyle={styles.card}>
             <Card.Title style={styles.title}>
                 <Text>{item.name}</Text>
             </Card.Title>
             <Card.Divider />
-            <Card.Image source={item.img}></Card.Image>
+            <Card.Image source={item.img} onPress={() => navigation.navigate("ItemScreen", { item })}></Card.Image>
             <View style={{ paddingHorizontal: 10 }}>
                 <Text style={{ marginBottom: 10, marginTop: 10 }} numberOfLines={5}>
                     {item.description}
@@ -54,7 +54,7 @@ function AppCard({ item }) {
                 <Text style={styles.seller}>{item.seller.name}</Text>
                 <View style={styles.action}>
                     <Text style={styles.price}>{item.price + "$"}</Text>
-                    <Button buttonStyle={styles.button} title="Buy" />
+                    <Button buttonStyle={styles.button} title="Buy" onPress={() => navigation.navigate("BuyScreen", { item })} />
                 </View>
             </View>
             <View style={styles.shareButtonContainer}>
