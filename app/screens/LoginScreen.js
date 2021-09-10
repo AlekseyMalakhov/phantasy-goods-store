@@ -40,7 +40,6 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
-    console.log(navigation);
     const handleSubmit = (e) => {
         console.log(e);
     };

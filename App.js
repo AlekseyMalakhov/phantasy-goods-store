@@ -16,6 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
+import CreateItemScreen from "./app/screens/CreateItemScreen";
 
 const styles = StyleSheet.create({
     // container: {
@@ -77,7 +78,8 @@ export default function App() {
                     }}
                 >
                     <Drawer.Screen name="Items" component={AppNavigator} />
-                    <Drawer.Screen name="Account" component={AuthNavigator} />
+                    <Drawer.Screen name="LoginScreen" component={LoginScreen} />
+                    <Drawer.Screen name="CreateItemScreen" component={CreateItemScreen} />
                     {/* <Drawer.Screen name="BuyScreen" component={Buy} />
                     <Drawer.Screen name="LoginScreen" component={LoginScreen} />
                     <Drawer.Screen name="RegisterScreen" component={RegisterScreen} />
