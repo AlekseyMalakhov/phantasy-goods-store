@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, Text, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
 import colors from "../config/colors";
 import ShareButton from "../components/ShareButton";
+import ImageCarousel from "../components/ImageCarousel";
 
 const styles = StyleSheet.create({
     container: {
@@ -49,6 +50,7 @@ function ItemScreen({ route, navigation }) {
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
                 <Text style={styles.title}>{item.name}</Text>
                 <Image source={item.images[0]}></Image>
+                <ImageCarousel />
                 <View style={{ paddingHorizontal: 20 }}>
                     <Text style={{ marginBottom: 10, marginTop: 10 }}>{item.description}</Text>
                     <Text style={styles.seller}>{item.seller.name}</Text>
