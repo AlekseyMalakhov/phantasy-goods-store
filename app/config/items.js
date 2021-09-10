@@ -6,7 +6,7 @@ export default [
         description:
             "Vivamus congue erat non dui pharetra pretium. Pellentesque rutrum finibus mi eget mollis. Phasellus finibus ligula eros, tempus sagittis justo pellentesque id. Aenean et metus sed diam condimentum tempor. Cras vitae congue enim, in placerat felis. Morbi tincidunt nisl quis rhoncus tempus. Nam vulputate augue et bibendum mollis. ",
         price: 20,
-        img: require(`../assets/AzurasStar.jpg`),
+        images: [require(`../assets/AzurasStar.jpg`), require(`../assets/FortifyIllusion.jpg`), require(`../assets/ScrollofRevenant.jpg`)],
         seller: {
             id: 1,
             name: "Ruby Ferguson",
@@ -19,7 +19,7 @@ export default [
         description:
             "Sed eu ex vitae justo dictum vulputate. Pellentesque consequat mattis dui sed aliquet. Praesent accumsan ullamcorper nibh, sit amet maximus justo. Nunc tincidunt pellentesque libero. Nulla malesuada augue et neque vulputate iaculis. Sed tempor nunc diam, vitae euismod tellus lobortis at. Fusce pulvinar purus sit amet dolor feugiat, vel semper tortor tristique. Nam vestibulum vel nunc et finibus. Donec ultricies porttitor condimentum. Cras hendrerit ligula sed enim venenatis, ac hendrerit ipsum luctus. Sed volutpat lectus sed dui auctor venenatis. Etiam consectetur nec nulla vitae finibus. Sed vitae rhoncus ligula, et efficitur tellus.Sed eu ex vitae justo dictum vulputate. Pellentesque consequat mattis dui sed aliquet. Praesent accumsan ullamcorper nibh, sit amet maximus justo. Nunc tincidunt pellentesque libero. Nulla malesuada augue et neque vulputate iaculis. Sed tempor nunc diam, vitae euismod tellus lobortis at. Fusce pulvinar purus sit amet dolor feugiat, vel semper tortor tristique. Nam vestibulum vel nunc et finibus. Donec ultricies porttitor condimentum. Cras hendrerit ligula sed enim venenatis, ac hendrerit ipsum luctus. Sed volutpat lectus sed dui auctor venenatis. Etiam consectetur nec nulla vitae finibus. Sed vitae rhoncus ligula, et efficitur tellus",
         price: 15,
-        img: require(`../assets/FortifyIllusion.jpg`),
+        images: [require(`../assets/FortifyIllusion.jpg`)],
         seller: {
             id: 2,
             name: "Ged Higgins",
@@ -32,7 +32,7 @@ export default [
         description:
             "Fusce venenatis sapien sit amet augue egestas, malesuada pulvinar turpis iaculis. Suspendisse scelerisque aliquet dapibus. Nullam turpis urna, pulvinar at pulvinar eu, fermentum id ex. Duis nulla est, vestibulum vitae laoreet ac, congue ut felis. Ut commodo sit amet dui et tincidunt. Integer eget sapien luctus, facilisis risus in, vestibulum ex. Aliquam laoreet, mi quis ultrices ornare, justo ipsum ultrices elit, id tempor libero nunc sit amet sem. Phasellus sed venenatis neque, auctor scelerisque arcu. ",
         price: 50,
-        img: require(`../assets/ScrollofRevenant.jpg`),
+        images: [require(`../assets/ScrollofRevenant.jpg`)],
         seller: {
             id: 3,
             name: "Willow Webster",
@@ -45,7 +45,7 @@ export default [
         description:
             "Etiam mattis justo quis sem vehicula, sed varius velit porttitor. Sed scelerisque tellus metus, dictum sodales est interdum eget. Nam ornare vel tellus sed venenatis. Sed non risus non nibh vehicula lobortis. Sed dapibus pharetra felis. Vestibulum dictum tortor eleifend metus ultrices, quis porttitor ex pulvinar. Integer sagittis erat eget hendrerit lacinia. ",
         price: 30,
-        img: require(`../assets/HallgerdsTale.jpg`),
+        images: [require(`../assets/HallgerdsTale.jpg`)],
         seller: {
             id: 4,
             name: "Rachel Wheatly",
@@ -58,7 +58,7 @@ export default [
         description:
             " Nam vestibulum vel nunc et finibus. Donec ultricies porttitor condimentum. Cras hendrerit ligula sed enim venenatis, ac hendrerit ipsum luctus. Sed volutpat lectus sed dui auctor venenatis. Etiam consectetur nec nulla vitae finibus. Sed vitae rhoncus ligula, et efficitur tellus. ",
         price: 65,
-        img: require(`../assets/EmbershardMineKey.jpg`),
+        images: [require(`../assets/EmbershardMineKey.jpg`)],
         seller: {
             id: 5,
             name: "Jim Shorts",

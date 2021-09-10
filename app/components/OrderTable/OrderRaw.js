@@ -28,7 +28,7 @@ function OrderRaw({ item }) {
     return (
         <View style={styles.container}>
             <View style={[styles.cell, styles.flex2]}>
-                <Image source={item.img} style={{ width: 80, height: 80 }} />
+                <Image source={item.images[0]} style={{ width: 80, height: 80 }} />
             </View>
             <View style={[styles.cell, styles.flex2]}>
                 <Text>{item.name}</Text>

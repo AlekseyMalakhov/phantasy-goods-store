@@ -46,7 +46,7 @@ function AppCard({ item, navigation }) {
                 <Text>{item.name}</Text>
             </Card.Title>
             <Card.Divider />
-            <Card.Image source={item.img} onPress={() => navigation.navigate("ItemScreen", { item })}></Card.Image>
+            <Card.Image source={item.images[0]} onPress={() => navigation.navigate("ItemScreen", { item })}></Card.Image>
             <View style={{ paddingHorizontal: 10 }}>
                 <Text style={{ marginBottom: 10, marginTop: 10 }} numberOfLines={5}>
                     {item.description}
