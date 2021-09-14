@@ -1,20 +1,16 @@
-import React from "react";
-import { View, StyleSheet, Text, Dimensions, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text, Dimensions, TouchableOpacity, Image } from "react-native";
 import Carousel from "react-native-anchor-carousel";
+import SimplePaginationDot from "./SimplePaginationDot";
 
 const { width } = Dimensions.get("window");
-
-const data = [{ backgroundColor: "red" }, { backgroundColor: "green" }, { backgroundColor: "blue" }, { backgroundColor: "yellow" }];
 
 const styles = StyleSheet.create({
     container: {},
     carousel: {
         flexGrow: 0,
-        backgroundColor: "orange",
-        //height: 200,
     },
     item: {
-        borderWidth: 2,
         justifyContent: "center",
         alignItems: "center",
     },
@@ -24,34 +20,36 @@ const styles = StyleSheet.create({
     },
 });
 
-function ImageCarousel(props) {
+function ImageCarousel({ images }) {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     const renderItem = ({ item, index }) => {
-        const { backgroundColor } = item;
         return (
             <TouchableOpacity
-                style={[styles.item, { backgroundColor }]}
+                style={styles.item}
                 onPress={() => {
                     this.numberCarousel.scrollToIndex(index);
                 }}
             >
-                <Text style={styles.text}>{index.toString()}</Text>
+                <Image source={item} />
             </TouchableOpacity>
         );
     };
 
     return (
         <View style={styles.container}>
-            <Text>Carousel</Text>
             <Carousel
                 style={styles.carousel}
-                data={data}
+                data={images}
                 renderItem={renderItem}
-                itemWidth={200}
+                itemWidth={width}
                 containerWidth={width - 10}
                 ref={(c) => {
                     this.numberCarousel = c;
                 }}
+                onScrollEnd={(item, index) => setCurrentIndex(index)}
             />
+            <SimplePaginationDot currentIndex={currentIndex} length={images.length} color="grey" style={{ marginTop: 10 }} />
         </View>
     );
 }

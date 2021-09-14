@@ -49,8 +49,7 @@ function ItemScreen({ route, navigation }) {
         <React.Fragment>
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
                 <Text style={styles.title}>{item.name}</Text>
-                <Image source={item.images[0]}></Image>
-                <ImageCarousel />
+                <ImageCarousel images={item.images} />
                 <View style={{ paddingHorizontal: 20 }}>
                     <Text style={{ marginBottom: 10, marginTop: 10 }}>{item.description}</Text>
                     <Text style={styles.seller}>{item.seller.name}</Text>
