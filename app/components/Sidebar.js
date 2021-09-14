@@ -7,6 +7,7 @@ import AuthNavigator from "../../navigation/AuthNavigator";
 import CreateItemScreen from "../../app/screens/CreateItemScreen";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "../config/colors";
+import UserScreen from "../screens/UserScreen";
 
 const styles = StyleSheet.create({
     container: {},
@@ -28,7 +29,7 @@ function Sidebar(props) {
         >
             <Drawer.Screen
                 name="User"
-                component={AppNavigator}
+                component={UserScreen}
                 options={{
                     drawerIcon: ({ focused }) => (
                         <Icon color={colors.primaryColor} size={35} name={focused ? "account-circle" : "account-circle-outline"} />
