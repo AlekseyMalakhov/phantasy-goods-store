@@ -5,6 +5,7 @@ import { Icon, ThemeProvider, Image, Button } from "react-native-elements";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import colors from "../config/colors";
+import authAPI from "../api/auth";
 
 const styles = StyleSheet.create({
     background: {
@@ -42,6 +43,7 @@ const validationSchema = Yup.object().shape({
 function LoginScreen({ navigation }) {
     const handleSubmit = (e) => {
         console.log(e);
+        authAPI.login(e);
     };
 
     return (

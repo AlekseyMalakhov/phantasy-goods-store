@@ -6,9 +6,10 @@ app.use(cors());
 app.use(express.json());
 
 //login
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
     const user = req.body;
     console.log(user);
+    res.status(200).send("Good!");
 });
 
 //start the server
