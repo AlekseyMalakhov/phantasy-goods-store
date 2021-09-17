@@ -3,6 +3,8 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 
 const user = {
+    id: 1,
+    name: "MegaMan",
     email: "www@www.ww",
     password: "12345",
 };
@@ -13,8 +15,9 @@ router.post("/", (req, res) => {
     if (!user || user.password !== password) {
         return res.status(401).send({ error: "Invalid email or password." });
     }
-
-    const token = jwt.sign({ email }, "mySuperPrivateKey");
+    const sendUser = { ...user };
+    delete sendUser.password;
+    const token = jwt.sign(sendUser, "mySuperPrivateKey");
     res.status(200).send(token);
 });
 
