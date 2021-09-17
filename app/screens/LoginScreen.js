@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, ImageBackground } from "react-native";
 import FormInput from "../components/forms/FormInput";
 import { Icon, ThemeProvider, Image, Button } from "react-native-elements";
@@ -6,6 +6,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import colors from "../config/colors";
 import authAPI from "../api/auth";
+import LoginError from "../components/LoginError";
 
 const styles = StyleSheet.create({
     background: {
@@ -41,9 +42,20 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
+    const [error, setError] = useState("");
+
     const handleSubmit = (e) => {
-        console.log(e);
-        authAPI.login(e);
+        authAPI.login(e).then((resp) => {
+            if (resp === 200) {
+                setError("");
+            } else {
+                if (resp === 401) {
+                    setError("Login or password is incorrect");
+                } else {
+                    setError("Some error occurred. Please try later");
+                }
+            }
+        });
     };
 
     return (
@@ -76,6 +88,7 @@ function LoginScreen({ navigation }) {
                                 },
                             }}
                         >
+                            <LoginError text={error} />
                             <Text style={styles.title}>Sign in</Text>
                             <FormInput
                                 placeholder="Email"
