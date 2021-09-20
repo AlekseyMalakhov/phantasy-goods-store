@@ -44,8 +44,8 @@ const validationSchema = Yup.object().shape({
 function LoginScreen({ navigation }) {
     const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
-        authAPI.login(e).then((resp) => {
+    const handleSubmit = (data) => {
+        authAPI.login(data).then((resp) => {
             if (resp !== 200) {
                 if (resp === 401) {
                     setError("Login or password is incorrect");

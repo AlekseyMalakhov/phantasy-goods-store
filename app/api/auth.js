@@ -53,9 +53,19 @@ const logout = () => {
     dispatch(changeUser(null));
 };
 
+const createAccount = (data) => {
+    return client
+        .post("/createAccount", data)
+        .then((response) => {
+            return response.status;
+        })
+        .catch((error) => error.response.status);
+};
+
 const authAPI = {
     login,
     logout,
+    createAccount,
 };
 
 export default authAPI;

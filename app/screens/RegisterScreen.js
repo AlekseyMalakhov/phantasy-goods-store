@@ -5,6 +5,7 @@ import { Icon, ThemeProvider, Image, Button } from "react-native-elements";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import colors from "../config/colors";
+import authAPI from "../api/auth";
 
 const styles = StyleSheet.create({
     container: {
@@ -36,19 +37,21 @@ const styles = StyleSheet.create({
 });
 
 const validationSchema = Yup.object().shape({
+    name: Yup.string().required().label("Name"),
     email: Yup.string().required().email().label("Email"),
     password: Yup.string().required().label("Password"),
 });
 
 function RegisterScreen({ navigation }) {
-    const handleSubmit = (e) => {
-        console.log(e);
+    const handleSubmit = (data) => {
+        authAPI.createAccount(data).then((resp) => console.log(resp));
     };
 
     return (
         <View style={styles.container}>
             <Formik
                 initialValues={{
+                    name: "",
                     email: "",
                     password: "",
                     repeatPassword: "",
@@ -78,6 +81,14 @@ function RegisterScreen({ navigation }) {
                             }}
                         >
                             <Text style={styles.title}>Create account</Text>
+                            <FormInput
+                                placeholder="Name"
+                                name="name"
+                                keyboardType="default"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                leftIcon={<Icon name="user" type="simple-line-icon" style={{ marginLeft: 10 }} color={colors.textLight} size={25} />}
+                            />
                             <FormInput
                                 placeholder="Email"
                                 name="email"
