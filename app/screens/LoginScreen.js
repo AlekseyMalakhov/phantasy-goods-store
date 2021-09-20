@@ -46,10 +46,7 @@ function LoginScreen({ navigation }) {
 
     const handleSubmit = (e) => {
         authAPI.login(e).then((resp) => {
-            if (resp === 200) {
-                setError("");
-                //navigation.navigate("CardsList");
-            } else {
+            if (resp !== 200) {
                 if (resp === 401) {
                     setError("Login or password is incorrect");
                 } else {

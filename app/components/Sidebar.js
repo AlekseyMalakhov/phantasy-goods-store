@@ -33,7 +33,7 @@ function Sidebar(props) {
                 name="User"
                 component={user.name ? UserScreen : AuthNavigator}
                 options={{
-                    title: user.name ? user.name : "Anonymous user",
+                    title: user.name ? user.name : "Login",
                     drawerIcon: ({ focused }) => (
                         <Icon color={colors.primaryColor} size={35} name={focused ? "account-circle" : "account-circle-outline"} />
                     ),
