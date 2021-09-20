@@ -25,6 +25,14 @@ const getToken = async () => {
     }
 };
 
+const removeToken = async () => {
+    try {
+        await SecureStore.deleteItemAsync(key);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const login = (data) => {
     return client
         .post("/login", data)
@@ -39,8 +47,15 @@ const login = (data) => {
         .catch((error) => error.response.status);
 };
 
+const logout = () => {
+    removeToken();
+    dispatch(changeAccessToken(""));
+    dispatch(changeUser(null));
+};
+
 const authAPI = {
     login,
+    logout,
 };
 
 export default authAPI;

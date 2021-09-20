@@ -4,7 +4,7 @@ export const userSlice = createSlice({
     name: "userStore",
     initialState: {
         accessToken: "",
-        user: {},
+        user: null,
     },
     reducers: {
         changeAccessToken: (state, action) => {
