@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const db = require("../db/queries");
 
 //createAccount
-router.post("/", (req, res) => {
-    console.log(req.body);
-    res.status(200).send("ok");
-});
+router.post("/", db.createUser);
 
 module.exports = router;
