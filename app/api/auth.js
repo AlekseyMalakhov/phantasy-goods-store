@@ -59,7 +59,7 @@ const createAccount = (data) => {
         .then((response) => {
             return response.status;
         })
-        .catch((error) => error.response.data);
+        .catch((error) => error.response.status);
 };
 
 const authAPI = {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import FormInput from "../components/forms/FormInput";
 import { Icon, ThemeProvider, Image, Button } from "react-native-elements";
@@ -17,12 +17,6 @@ const styles = StyleSheet.create({
     title: {
         marginVertical: 15,
         fontSize: 20,
-        //color: "white",
-    },
-    logo: {
-        width: 200,
-        height: 200,
-        marginTop: 50,
     },
     buttons: {
         width: "100%",
@@ -34,6 +28,9 @@ const styles = StyleSheet.create({
     buy: {
         backgroundColor: colors.primaryDarkColor,
     },
+    error: {
+        color: "red",
+    },
 });
 
 const validationSchema = Yup.object().shape({
@@ -43,8 +40,21 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen({ navigation }) {
+    const [error, setError] = useState(false);
+
     const handleSubmit = (data) => {
-        authAPI.createAccount(data).then((resp) => console.log(resp));
+        authAPI
+            .createAccount(data)
+            .then((status) => {
+                if (status === 201) {
+                    setError(false);
+                    navigation.navigate("AccountSuccessfullyCreated");
+                }
+                if (status === 409) {
+                    setError(true);
+                }
+            })
+            .catch((err) => console.log(err));
     };
 
     return (
@@ -70,7 +80,7 @@ function RegisterScreen({ navigation }) {
                                         borderWidth: 1,
                                         backgroundColor: "white",
                                         height: 43,
-                                        marginVertical: 10,
+                                        marginVertical: 8,
                                     },
                                     placeholderTextColor: colors.textLight,
                                     inputStyle: {
@@ -126,6 +136,7 @@ function RegisterScreen({ navigation }) {
                             />
                         </ThemeProvider>
 
+                        {error ? <Text style={styles.error}>Current email already exists</Text> : null}
                         <View style={styles.buttons}>
                             <Button
                                 containerStyle={{ marginTop: 10, marginBottom: 25 }}
