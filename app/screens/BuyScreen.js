@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
 import DeliveryInfo from "../components/DeliveryInfo";
 import OrderTable from "../components/OrderTable/OrderTable";
+import { useSelector } from "react-redux";
 
 const styles = StyleSheet.create({
     container: {
@@ -17,12 +18,13 @@ const styles = StyleSheet.create({
     },
 });
 
-function BuyScreen({ items }) {
+function BuyScreen() {
+    const cart = useSelector((state) => state.user.cart);
     return (
         <View style={styles.container}>
             <ScrollView>
                 <Text style={styles.title}>Order conformation</Text>
-                <OrderTable items={items} />
+                <OrderTable items={cart} />
                 <DeliveryInfo />
             </ScrollView>
         </View>

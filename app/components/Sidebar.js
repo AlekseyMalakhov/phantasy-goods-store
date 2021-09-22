@@ -54,7 +54,7 @@ function Sidebar(props) {
                         user ? (
                             <Avatar rounded size="medium" source={{ uri: "https://picsum.photos/200" }} />
                         ) : (
-                            <Icon color={colors.primaryColor} size={35} name={focused ? "account-circle" : "account-circle-outline"} />
+                            <Icon color={colors.primaryColor} size={45} name={focused ? "account-circle" : "account-circle-outline"} />
                         ),
                 }}
             />

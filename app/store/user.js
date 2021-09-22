@@ -5,6 +5,7 @@ export const userSlice = createSlice({
     initialState: {
         accessToken: "",
         user: null,
+        cart: [],
     },
     reducers: {
         changeAccessToken: (state, action) => {
@@ -13,8 +14,13 @@ export const userSlice = createSlice({
         changeUser: (state, action) => {
             state.user = action.payload;
         },
+        addItemToCart: (state, action) => {
+            const newCart = [...state.cart];
+            newCart.push(action.payload);
+            state.cart = newCart;
+        },
     },
 });
 
-export const { changeAccessToken, changeUser } = userSlice.actions;
+export const { changeAccessToken, changeUser, addItemToCart } = userSlice.actions;
 export default userSlice.reducer;

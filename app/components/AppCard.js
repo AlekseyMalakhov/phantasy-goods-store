@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 import { Card, Button } from "react-native-elements";
 import colors from "../config/colors";
 import ShareButton from "./ShareButton";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "../store/user";
 
 const styles = StyleSheet.create({
     card: {
@@ -40,6 +42,12 @@ const styles = StyleSheet.create({
 });
 
 function AppCard({ item, navigation }) {
+    const dispatch = useDispatch();
+
+    const addToCart = () => {
+        dispatch(addItemToCart(item));
+    };
+
     return (
         <Card containerStyle={styles.card}>
             <Card.Title style={styles.title}>
@@ -54,7 +62,7 @@ function AppCard({ item, navigation }) {
                 <Text style={styles.seller}>{item.seller.name}</Text>
                 <View style={styles.action}>
                     <Text style={styles.price}>{item.price + "$"}</Text>
-                    <Button buttonStyle={styles.button} title="Buy" onPress={() => navigation.navigate("BuyScreen", { item })} />
+                    <Button buttonStyle={styles.button} title="Buy" onPress={addToCart} />
                 </View>
             </View>
             <View style={styles.shareButtonContainer}>
