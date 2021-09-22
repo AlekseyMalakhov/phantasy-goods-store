@@ -1,7 +1,9 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import { Image } from "react-native-elements";
 import colors from "../../config/colors";
+import { useDispatch } from "react-redux";
+import { removeItemFromCart } from "../../store/user";
 
 const styles = StyleSheet.create({
     container: {
@@ -25,8 +27,16 @@ const styles = StyleSheet.create({
 });
 
 function OrderRaw({ item }) {
+    const dispatch = useDispatch();
+
+    const askToDelete = () => {
+        Alert.alert("Delete", `Are you sure you want to delete ${item.name}?`, [
+            { text: "Yes", onPress: () => dispatch(removeItemFromCart(item)) },
+            { text: "No" },
+        ]);
+    };
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onLongPress={askToDelete}>
             <View style={[styles.cell, styles.flex2]}>
                 <Image source={item.images[0]} style={{ width: 80, height: 80 }} />
             </View>
@@ -40,7 +50,7 @@ function OrderRaw({ item }) {
             <View style={styles.cell}>
                 <Text>{item.price + "$"}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

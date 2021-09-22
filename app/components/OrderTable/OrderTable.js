@@ -22,7 +22,7 @@ function OrderTable({ items }) {
             }
         }
         setTotal(total);
-    }, []);
+    }, [items]);
 
     return (
         <View style={styles.container}>
