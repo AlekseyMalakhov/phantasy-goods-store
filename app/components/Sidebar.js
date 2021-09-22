@@ -11,6 +11,7 @@ import UserScreen from "../screens/UserScreen";
 import { useSelector } from "react-redux";
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from "@react-navigation/drawer";
 import authAPI from "../api/auth";
+import { Avatar } from "react-native-elements";
 
 const styles = StyleSheet.create({
     container: {},
@@ -49,9 +50,12 @@ function Sidebar(props) {
                 component={user ? UserScreen : AuthNavigator}
                 options={{
                     title: user ? user.name : "Login",
-                    drawerIcon: ({ focused }) => (
-                        <Icon color={colors.primaryColor} size={35} name={focused ? "account-circle" : "account-circle-outline"} />
-                    ),
+                    drawerIcon: ({ focused }) =>
+                        user ? (
+                            <Avatar rounded size="medium" source={{ uri: "https://picsum.photos/200" }} />
+                        ) : (
+                            <Icon color={colors.primaryColor} size={35} name={focused ? "account-circle" : "account-circle-outline"} />
+                        ),
                 }}
             />
             <Drawer.Screen name="Items" component={AppNavigator} />
