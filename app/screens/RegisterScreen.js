@@ -45,22 +45,57 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen({ navigation }) {
-    const [error, setError] = useState(false);
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorPassword, setErrorPassword] = useState(false);
 
     const handleSubmit = (data) => {
         console.log(data);
-        // authAPI
-        //     .createAccount(data)
-        //     .then((status) => {
-        //         if (status === 201) {
-        //             setError(false);
-        //             navigation.navigate("AccountSuccessfullyCreated");
-        //         }
-        //         if (status === 409) {
-        //             setError(true);
-        //         }
-        //     })
-        //     .catch((err) => console.log(err));
+        if (data.password !== data.repeatPassword) {
+            setErrorPassword(true);
+            return;
+        }
+        const textData = { ...data };
+        delete textData.image;
+        delete textData.repeatPassword;
+
+        const JSONObj = JSON.stringify(textData);
+        const newAccount = {
+            text: JSONObj,
+            img: data.image,
+        };
+        console.log(newAccount);
+
+        /*
+        img: File
+            lastModified: 1630668050702
+            lastModifiedDate: Fri Sep 03 2021 14:20:50 GMT+0300 (Moscow Standard Time) {}
+            name: "good-designed-order-confirmation-email-with-a-gif.gif"
+            size: 87957
+            type: "image/gif"
+            uid: 1632399347867
+            webkitRelativePath: ""
+            [[Prototype]]: File
+            text: "{\"name\":\"test124\",\"password\":\"123\"}"
+            [[Prototype]]: Object
+        */
+
+        const formData = new FormData();
+        for (let x in newAccount) {
+            formData.append(x, newAccount[x]);
+        }
+
+        authAPI
+            .createAccount(formData)
+            .then((status) => {
+                if (status === 201) {
+                    setErrorEmail(false);
+                    navigation.navigate("AccountSuccessfullyCreated");
+                }
+                if (status === 409) {
+                    setErrorEmail(true);
+                }
+            })
+            .catch((err) => console.log(err));
     };
 
     return (
@@ -98,7 +133,7 @@ function RegisterScreen({ navigation }) {
                             }}
                         >
                             <Text style={styles.title}>Create account</Text>
-                            <ImageSingleInput name="image" style={styles.img} />
+                            <ImageSingleInput name="image" style={styles.img} raw />
                             <FormInput
                                 placeholder="Name"
                                 name="name"
@@ -144,7 +179,8 @@ function RegisterScreen({ navigation }) {
                             />
                         </ThemeProvider>
 
-                        {error ? <Text style={styles.error}>Current email already exists</Text> : null}
+                        {errorEmail ? <Text style={styles.error}>Current email already exists</Text> : null}
+                        {errorPassword ? <Text style={styles.error}>Passwords don't match each other</Text> : null}
                         <View style={styles.buttons}>
                             <Button
                                 containerStyle={{ marginTop: 10, marginBottom: 25 }}

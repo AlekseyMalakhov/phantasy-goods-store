@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import colors from "../../config/colors";
+import mime from "mime";
 
 const styles = StyleSheet.create({
     container: {
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function ImageInput({ imageUri, onChangeImage, style }) {
+function ImageInput({ imageUri, onChangeImage, style, raw }) {
     const requestPermission = async () => {
         const result = await ImagePicker.requestCameraPermissionsAsync();
         if (!result.granted) {
@@ -40,27 +41,56 @@ function ImageInput({ imageUri, onChangeImage, style }) {
             ]);
     };
 
+    const fetchImageFromUri = async (uri) => {
+        console.log("hi");
+        const response = await fetch(uri);
+        console.log(response);
+        const blob = await response.blob();
+        return blob;
+    };
+
     const selectImage = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 quality: 0.5,
             });
+            console.log(result);
             if (!result.cancelled) {
-                onChangeImage(result.uri);
+                if (raw) {
+                    //const img = await fetchImageFromUri(result.uri);
+                    const img = {
+                        uri: result.uri,
+                        type: mime.getType(result.uri),
+                        name: result.uri.split("/").pop(),
+                    };
+                    onChangeImage(img);
+                } else {
+                    onChangeImage(result.uri);
+                }
             }
         } catch (error) {
             console.log("Error reading an image", error);
         }
     };
 
-    return (
-        <TouchableOpacity onPress={handlePress}>
-            <View style={[styles.container, style]}>
-                {!imageUri ? <Icon name="camera" size={30} /> : <Image source={{ uri: imageUri }} style={styles.img} />}
-            </View>
-        </TouchableOpacity>
-    );
+    if (!raw) {
+        return (
+            <TouchableOpacity onPress={handlePress}>
+                <View style={[styles.container, style]}>
+                    {!imageUri ? <Icon name="camera" size={30} /> : <Image source={{ uri: imageUri }} style={styles.img} />}
+                </View>
+            </TouchableOpacity>
+        );
+    } else {
+        return (
+            <TouchableOpacity onPress={handlePress}>
+                <View style={[styles.container, style]}>
+                    <Icon name="camera" size={30} />
+                </View>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export default ImageInput;

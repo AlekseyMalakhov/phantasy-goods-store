@@ -53,9 +53,9 @@ const logout = () => {
     dispatch(changeUser(null));
 };
 
-const createAccount = (data) => {
+const createAccount = (formData) => {
     return client
-        .post("/createAccount", data)
+        .post("/createAccount", formData, { headers: { "Content-Type": "multipart/form-data" } })
         .then((response) => {
             return response.status;
         })
