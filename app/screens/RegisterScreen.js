@@ -6,6 +6,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import colors from "../config/colors";
 import authAPI from "../api/auth";
+import ImageSingleInput from "../components/forms/ImageSingleInput";
 
 const styles = StyleSheet.create({
     container: {
@@ -31,6 +32,10 @@ const styles = StyleSheet.create({
     error: {
         color: "red",
     },
+    img: {
+        margin: 5,
+        overflow: "hidden",
+    },
 });
 
 const validationSchema = Yup.object().shape({
@@ -43,24 +48,26 @@ function RegisterScreen({ navigation }) {
     const [error, setError] = useState(false);
 
     const handleSubmit = (data) => {
-        authAPI
-            .createAccount(data)
-            .then((status) => {
-                if (status === 201) {
-                    setError(false);
-                    navigation.navigate("AccountSuccessfullyCreated");
-                }
-                if (status === 409) {
-                    setError(true);
-                }
-            })
-            .catch((err) => console.log(err));
+        console.log(data);
+        // authAPI
+        //     .createAccount(data)
+        //     .then((status) => {
+        //         if (status === 201) {
+        //             setError(false);
+        //             navigation.navigate("AccountSuccessfullyCreated");
+        //         }
+        //         if (status === 409) {
+        //             setError(true);
+        //         }
+        //     })
+        //     .catch((err) => console.log(err));
     };
 
     return (
         <View style={styles.container}>
             <Formik
                 initialValues={{
+                    image: "",
                     name: "",
                     email: "",
                     password: "",
@@ -91,6 +98,7 @@ function RegisterScreen({ navigation }) {
                             }}
                         >
                             <Text style={styles.title}>Create account</Text>
+                            <ImageSingleInput name="image" style={styles.img} />
                             <FormInput
                                 placeholder="Name"
                                 name="name"

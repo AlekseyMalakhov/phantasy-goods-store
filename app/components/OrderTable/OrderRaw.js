@@ -4,6 +4,7 @@ import { Image } from "react-native-elements";
 import colors from "../../config/colors";
 import { useDispatch } from "react-redux";
 import { removeItemFromCart } from "../../store/user";
+import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
     container: {
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
 
 function OrderRaw({ item }) {
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     const askToDelete = () => {
         Alert.alert("Delete", `Are you sure you want to delete ${item.name}?`, [
@@ -38,7 +40,7 @@ function OrderRaw({ item }) {
     return (
         <TouchableOpacity style={styles.container} onLongPress={askToDelete}>
             <View style={[styles.cell, styles.flex2]}>
-                <Image source={item.images[0]} style={{ width: 80, height: 80 }} />
+                <Image source={item.images[0]} style={{ width: 80, height: 80 }} onPress={() => navigation.navigate("ItemScreen", { item })} />
             </View>
             <View style={[styles.cell, styles.flex2]}>
                 <Text>{item.name}</Text>

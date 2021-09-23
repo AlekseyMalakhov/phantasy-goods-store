@@ -22,11 +22,15 @@ function BuyScreen() {
     const cart = useSelector((state) => state.user.cart);
     return (
         <View style={styles.container}>
-            <ScrollView>
-                <Text style={styles.title}>Order conformation</Text>
-                <OrderTable items={cart} />
-                <DeliveryInfo />
-            </ScrollView>
+            {cart.length > 0 ? (
+                <ScrollView>
+                    <Text style={styles.title}>Order conformation</Text>
+                    <OrderTable items={cart} />
+                    <DeliveryInfo />
+                </ScrollView>
+            ) : (
+                <Text style={styles.title}>Cart is empty</Text>
+            )}
         </View>
     );
 }
