@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 const multer = require("multer");
-const multerS3 = require("multer-s3");
+const multerS3 = require("multer-s3-transform");
 //Amazon
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3({
@@ -20,7 +20,6 @@ const s3 = new AWS.S3({
 });
 
 const uploadImgToAmazon = multer({
-    limits: { fieldSize: 2 * 1024 * 1024 },
     storage: multerS3({
         s3: s3,
         bucket: "phantasy-goods-store",
