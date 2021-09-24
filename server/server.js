@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const cors = require("cors");
 const db = require("./db/queries");
 
@@ -20,6 +20,7 @@ const s3 = new AWS.S3({
 });
 
 const uploadImgToAmazon = multer({
+    limits: { fieldSize: 2 * 1024 * 1024 },
     storage: multerS3({
         s3: s3,
         bucket: "phantasy-goods-store",

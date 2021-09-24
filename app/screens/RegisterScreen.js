@@ -96,6 +96,24 @@ function RegisterScreen({ navigation }) {
                 }
             })
             .catch((err) => console.log(err));
+
+        // fetch("http://192.168.100.7:3001/api/createAccount", {
+        //     method: "POST",
+        //     body: formData,
+        // })
+        //     .then((status) => {
+        //         if (status === 201) {
+        //             setErrorEmail(false);
+        //             navigation.navigate("AccountSuccessfullyCreated");
+        //         }
+        //         if (status === 409) {
+        //             setErrorEmail(true);
+        //         }
+        //     })
+        //     .then((data) => console.log(data))
+        //     .catch((error) => {
+        //         console.error("Error:", error);
+        //     });
     };
 
     return (

@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function ImageInput({ imageUri, onChangeImage, style, raw }) {
+function ImageInput({ imageUri, onChangeImage, style, raw: forAmazon }) {
     const requestPermission = async () => {
         const result = await ImagePicker.requestCameraPermissionsAsync();
         if (!result.granted) {
@@ -41,28 +41,18 @@ function ImageInput({ imageUri, onChangeImage, style, raw }) {
             ]);
     };
 
-    const fetchImageFromUri = async (uri) => {
-        console.log("hi");
-        const response = await fetch(uri);
-        console.log(response);
-        const blob = await response.blob();
-        return blob;
-    };
-
     const selectImage = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 quality: 0.5,
             });
-            console.log(result);
             if (!result.cancelled) {
-                if (raw) {
-                    //const img = await fetchImageFromUri(result.uri);
+                if (forAmazon) {
                     const img = {
                         uri: result.uri,
-                        type: mime.getType(result.uri),
                         name: result.uri.split("/").pop(),
+                        type: mime.getType(result.uri),
                     };
                     onChangeImage(img);
                 } else {
@@ -74,7 +64,7 @@ function ImageInput({ imageUri, onChangeImage, style, raw }) {
         }
     };
 
-    if (!raw) {
+    if (!forAmazon) {
         return (
             <TouchableOpacity onPress={handlePress}>
                 <View style={[styles.container, style]}>

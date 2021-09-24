@@ -5,7 +5,10 @@ const connectionString = "postgres://zrhjogpc:RKMN42zFlEorpu5PbVPxzCsg_U5jInQZ@h
 const pool = new Pool({ connectionString });
 
 const createUser = async (req, res) => {
-    console.log(req.file);
+    let img = "";
+    if (req.file) {
+        img = req.file.location;
+    }
     const { name, email, password } = JSON.parse(req.body.text);
     const query1 = {
         text: "SELECT * FROM users WHERE email = $1",
@@ -16,8 +19,8 @@ const createUser = async (req, res) => {
         const existingUser = response1.rows[0];
         if (!existingUser) {
             const query2 = {
-                text: "INSERT INTO users (name, email, password) VALUES($1, $2, $3) RETURNING id",
-                values: [name, email, password],
+                text: "INSERT INTO users (name, email, password, img) VALUES($1, $2, $3, $4) RETURNING id",
+                values: [name, email, password, img],
             };
             pool.query(query2, (error, results) => {
                 if (error) {

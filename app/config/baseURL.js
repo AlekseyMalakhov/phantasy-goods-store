@@ -1,9 +1,9 @@
 import { Constants } from "expo-constants";
 
 const settings = {
-    dev: "http://192.168.100.7:3000/api",
-    staging: "http://192.168.100.7:3000/api",
-    prod: "http://192.168.100.7:3000/api",
+    dev: "http://192.168.100.7:3001/api",
+    staging: "http://192.168.100.7:3001/api",
+    prod: "http://192.168.100.7:3001/api",
 };
 
 const getBaseURL = () => {
