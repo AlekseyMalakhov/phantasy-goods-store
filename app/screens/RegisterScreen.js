@@ -49,7 +49,6 @@ function RegisterScreen({ navigation }) {
     const [errorPassword, setErrorPassword] = useState(false);
 
     const handleSubmit = (data) => {
-        console.log(data);
         if (data.password !== data.repeatPassword) {
             setErrorPassword(true);
             return;
@@ -63,21 +62,6 @@ function RegisterScreen({ navigation }) {
             text: JSONObj,
             img: data.image,
         };
-        console.log(newAccount);
-
-        /*
-        img: File
-            lastModified: 1630668050702
-            lastModifiedDate: Fri Sep 03 2021 14:20:50 GMT+0300 (Moscow Standard Time) {}
-            name: "good-designed-order-confirmation-email-with-a-gif.gif"
-            size: 87957
-            type: "image/gif"
-            uid: 1632399347867
-            webkitRelativePath: ""
-            [[Prototype]]: File
-            text: "{\"name\":\"test124\",\"password\":\"123\"}"
-            [[Prototype]]: Object
-        */
 
         const formData = new FormData();
         for (let x in newAccount) {
@@ -96,24 +80,6 @@ function RegisterScreen({ navigation }) {
                 }
             })
             .catch((err) => console.log(err));
-
-        // fetch("http://192.168.100.7:3001/api/createAccount", {
-        //     method: "POST",
-        //     body: formData,
-        // })
-        //     .then((status) => {
-        //         if (status === 201) {
-        //             setErrorEmail(false);
-        //             navigation.navigate("AccountSuccessfullyCreated");
-        //         }
-        //         if (status === 409) {
-        //             setErrorEmail(true);
-        //         }
-        //     })
-        //     .then((data) => console.log(data))
-        //     .catch((error) => {
-        //         console.error("Error:", error);
-        //     });
     };
 
     return (

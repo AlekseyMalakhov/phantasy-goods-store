@@ -59,7 +59,9 @@ function AppCard({ item, navigation }) {
                 <Text style={{ marginBottom: 10, marginTop: 10 }} numberOfLines={5}>
                     {item.description}
                 </Text>
-                <Text style={styles.seller}>{item.seller.name}</Text>
+                <Text style={styles.seller} onPress={() => navigation.navigate("WriteMessageScreen", { item })}>
+                    {item.seller.name}
+                </Text>
                 <View style={styles.action}>
                     <Text style={styles.price}>{item.price + "$"}</Text>
                     <Button buttonStyle={styles.button} title="Buy" onPress={addToCart} />

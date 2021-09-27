@@ -52,7 +52,7 @@ function Sidebar(props) {
                     title: user ? user.name : "Login",
                     drawerIcon: ({ focused }) =>
                         user ? (
-                            <Avatar rounded size="medium" source={{ uri: "https://picsum.photos/200" }} />
+                            <Avatar rounded size="medium" source={{ uri: user.img }} />
                         ) : (
                             <Icon color={colors.primaryColor} size={45} name={focused ? "account-circle" : "account-circle-outline"} />
                         ),
