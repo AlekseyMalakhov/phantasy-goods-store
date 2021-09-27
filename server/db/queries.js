@@ -6,8 +6,9 @@ const pool = new Pool({ connectionString });
 
 const createUser = async (req, res) => {
     let img = "";
+    console.log(req.file);
     if (req.file) {
-        img = req.file.location;
+        img = req.file.transforms[0].location;
     }
     const { name, email, password } = JSON.parse(req.body.text);
     const query1 = {

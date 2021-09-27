@@ -1,4 +1,5 @@
 const express = require("express");
+const sharp = require("sharp");
 const app = express();
 const port = process.env.PORT || 3001;
 const cors = require("cors");
@@ -24,9 +25,19 @@ const uploadImgToAmazon = multer({
         s3: s3,
         bucket: "phantasy-goods-store",
         acl: "public-read",
-        key: function (req, file, cb) {
-            cb(null, Date.now().toString() + "_" + file.originalname);
+        shouldTransform: function (req, file, cb) {
+            cb(null, /^image/i.test(file.mimetype));
         },
+        transforms: [
+            {
+                key: function (req, file, cb) {
+                    cb(null, Date.now().toString() + "_min" + file.originalname);
+                },
+                transform: function (req, file, cb) {
+                    cb(null, sharp().resize(150, 150).jpeg());
+                },
+            },
+        ],
     }),
 });
 //end Amazon
