@@ -58,7 +58,25 @@ const login = async (req, res) => {
     }
 };
 
+const sendMessage = async (req, res) => {
+    const { fromId, toId, text, date } = req.body;
+    const query = {
+        text: "INSERT INTO messages (from_id, to_id, text, date) VALUES($1, $2, $3, $4) RETURNING id",
+        values: [fromId, toId, text, date],
+    };
+    try {
+        const response = await pool.query(query);
+        console.log(`Message added with ID: ${response.rows[0].id}`);
+
+        res.status(201).send(`Message added with ID: ${response.rows[0].id}`);
+    } catch (error) {
+        res.status(500).send(error.stack);
+        console.log(error.stack);
+    }
+};
+
 module.exports = {
     createUser,
     login,
+    sendMessage,
 };
