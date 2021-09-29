@@ -3,16 +3,17 @@ import { View, StyleSheet, Text } from "react-native";
 import { Input, Button } from "react-native-elements";
 import colors from "../config/colors";
 import messagesAPI from "../api/messages";
+import { useSelector } from "react-redux";
+import { useLinkTo } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: "center",
-        alignItems: "center",
         marginHorizontal: 10,
     },
     title: {
         fontSize: 20,
         marginVertical: 10,
+        textAlign: "center",
     },
     messageContainer: {
         borderRadius: 5,
@@ -27,13 +28,12 @@ const styles = StyleSheet.create({
     button: {
         borderRadius: 5,
         width: 100,
-        marginHorizontal: 20,
     },
     buttons: {
-        display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         marginBottom: 20,
+        marginHorizontal: 30,
     },
     create: {
         backgroundColor: colors.primaryDarkColor,
@@ -46,7 +46,10 @@ const styles = StyleSheet.create({
 });
 
 function WriteMessageScreen({ route, navigation }) {
+    const linkTo = useLinkTo();
+
     const { item } = route.params;
+    const user = useSelector((state) => state.user.user);
     const [message, setMessage] = useState("");
     const [error, setError] = useState(false);
 
@@ -73,26 +76,35 @@ function WriteMessageScreen({ route, navigation }) {
             });
     };
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Send message to {item.seller.name}</Text>
-            {error ? (
-                <Text style={styles.error}>Some error occurred.Message could not be sent. Please try again later or contact administrator.</Text>
-            ) : null}
-            <Input
-                onChangeText={setMessage}
-                value={message}
-                multiline
-                numberOfLines={4}
-                inputContainerStyle={styles.messageContainer}
-                style={styles.message}
-            />
-            <View style={styles.buttons}>
-                <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={() => navigation.navigate("CardsList")} />
-                <Button buttonStyle={[styles.button, styles.create]} title="Create" onPress={handleSubmit} />
+    if (user) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.title}>Send message to {item.seller.name}</Text>
+                {error ? (
+                    <Text style={styles.error}>Some error occurred.Message could not be sent. Please try again later or contact administrator.</Text>
+                ) : null}
+                <Input
+                    onChangeText={setMessage}
+                    value={message}
+                    multiline
+                    numberOfLines={4}
+                    inputContainerStyle={styles.messageContainer}
+                    style={styles.message}
+                />
+                <View style={styles.buttons}>
+                    <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={() => navigation.navigate("CardsList")} />
+                    <Button buttonStyle={[styles.button, styles.create]} title="Create" disabled={!message ? true : false} onPress={handleSubmit} />
+                </View>
             </View>
-        </View>
-    );
+        );
+    } else {
+        return (
+            <View style={(styles.container, { alignItems: "center" })}>
+                <Text style={styles.title}>To send message to seller please login</Text>
+                <Button buttonStyle={[styles.button, styles.create, { marginTop: 20 }]} title="Login" onPress={() => linkTo("/User")} />
+            </View>
+        );
+    }
 }
 
 export default WriteMessageScreen;
