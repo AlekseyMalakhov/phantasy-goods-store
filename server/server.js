@@ -45,6 +45,7 @@ const uploadImgToAmazon = multer({
 app.post("/api/login", db.login);
 app.post("/api/createAccount", uploadImgToAmazon.single("img"), db.createUser);
 app.post("/api/sendMessage", db.sendMessage);
+app.get("/api/getMessages", db.getMessages);
 
 //start the server
 app.listen(port, () => {

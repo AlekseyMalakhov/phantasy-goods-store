@@ -2,7 +2,7 @@ import client from "./client";
 import * as SecureStore from "expo-secure-store";
 import jwtDecode from "jwt-decode";
 import { store } from "../store/store";
-import { changeAccessToken, changeUser } from "../store/user";
+import { changeAccessToken, changeUser, changeMessages } from "../store/user";
 
 const dispatch = store.dispatch;
 
@@ -33,6 +33,12 @@ const removeToken = async () => {
     }
 };
 
+const getMessages = (userId) => {
+    client.get("/getMessages?userId=" + userId).then((response) => {
+        dispatch(changeMessages(response.data));
+    });
+};
+
 const login = (data) => {
     return client
         .post("/login", data)
@@ -42,6 +48,7 @@ const login = (data) => {
             dispatch(changeAccessToken(token));
             const user = jwtDecode(token);
             dispatch(changeUser(user));
+            getMessages(user.id);
             return response.status;
         })
         .catch((error) => error.response.status);

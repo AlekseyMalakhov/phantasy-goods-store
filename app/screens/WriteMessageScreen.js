@@ -57,7 +57,7 @@ function WriteMessageScreen({ route, navigation }) {
 
     const handleSubmit = () => {
         const messageObj = {
-            fromId: 34,
+            fromId: user.id,
             toId: item.seller.id,
             text: message,
             date: Date.now(),

@@ -77,8 +77,24 @@ const sendMessage = async (req, res) => {
     }
 };
 
+const getMessages = async (req, res) => {
+    const userId = req.query.userId;
+    const query = {
+        text: "SELECT * FROM messages WHERE from_id = $1 OR to_id = $1",
+        values: [userId],
+    };
+    try {
+        const response = await pool.query(query);
+        res.status(200).send(response.rows);
+    } catch (error) {
+        res.status(500).send(error.stack);
+        console.log(error.stack);
+    }
+};
+
 module.exports = {
     createUser,
     login,
     sendMessage,
+    getMessages,
 };
