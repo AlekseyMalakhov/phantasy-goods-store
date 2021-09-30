@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import colors from "../config/colors";
 import authAPI from "../api/auth";
 import ImageSingleInput from "../components/forms/ImageSingleInput";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const styles = StyleSheet.create({
     container: {
@@ -42,15 +43,17 @@ const validationSchema = Yup.object().shape({
     name: Yup.string().required().label("Name"),
     email: Yup.string().required().email().label("Email"),
     password: Yup.string().required().label("Password"),
+    repeatPassword: Yup.string().required().label("Repeat password"),
 });
 
 function RegisterScreen({ navigation }) {
-    const [errorEmail, setErrorEmail] = useState(false);
-    const [errorPassword, setErrorPassword] = useState(false);
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = (data) => {
+        setError("");
         if (data.password !== data.repeatPassword) {
-            setErrorPassword(true);
+            setError("Passwords don't match each other");
             return;
         }
         const textData = { ...data };
@@ -68,22 +71,29 @@ function RegisterScreen({ navigation }) {
             formData.append(x, newAccount[x]);
         }
 
+        setLoading(true);
         authAPI
             .createAccount(formData)
             .then((status) => {
+                setLoading(false);
                 if (status === 201) {
-                    setErrorEmail(false);
                     navigation.navigate("AccountSuccessfullyCreated");
-                }
-                if (status === 409) {
-                    setErrorEmail(true);
+                } else if (status === 409) {
+                    setError("Current email already exists");
+                } else {
+                    setError("Some error occurred. Please try later");
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                setLoading(false);
+                setError("Some error occurred. Please try later");
+                console.log(err);
+            });
     };
 
     return (
         <View style={styles.container}>
+            <LoadingIndicator visible={loading} />
             <Formik
                 initialValues={{
                     image: "",
@@ -163,8 +173,7 @@ function RegisterScreen({ navigation }) {
                             />
                         </ThemeProvider>
 
-                        {errorEmail ? <Text style={styles.error}>Current email already exists</Text> : null}
-                        {errorPassword ? <Text style={styles.error}>Passwords don't match each other</Text> : null}
+                        {error ? <Text style={styles.error}>{error}</Text> : null}
                         <View style={styles.buttons}>
                             <Button
                                 containerStyle={{ marginTop: 10, marginBottom: 25 }}
