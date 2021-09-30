@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function ImageInput({ imageUri, onChangeImage, style, raw: forAmazon }) {
+function ImageInput({ imageUri, onChangeImage, style, forAmazon }) {
     const requestPermission = async () => {
         const result = await ImagePicker.requestCameraPermissionsAsync();
         if (!result.granted) {
@@ -64,23 +64,17 @@ function ImageInput({ imageUri, onChangeImage, style, raw: forAmazon }) {
         }
     };
 
-    if (!forAmazon) {
-        return (
-            <TouchableOpacity onPress={handlePress}>
-                <View style={[styles.container, style]}>
-                    {!imageUri ? <Icon name="camera" size={30} /> : <Image source={{ uri: imageUri }} style={styles.img} />}
-                </View>
-            </TouchableOpacity>
-        );
-    } else {
-        return (
-            <TouchableOpacity onPress={handlePress}>
-                <View style={[styles.container, style]}>
+    return (
+        <TouchableOpacity onPress={handlePress}>
+            <View style={[styles.container, style]}>
+                {!imageUri ? (
                     <Icon name="camera" size={30} />
-                </View>
-            </TouchableOpacity>
-        );
-    }
+                ) : (
+                    <Image source={!forAmazon ? { uri: imageUri } : { uri: imageUri.uri }} style={styles.img} />
+                )}
+            </View>
+        </TouchableOpacity>
+    );
 }
 
 export default ImageInput;

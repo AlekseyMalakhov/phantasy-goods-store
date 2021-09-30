@@ -127,7 +127,7 @@ function RegisterScreen({ navigation }) {
                             }}
                         >
                             <Text style={styles.title}>Create account</Text>
-                            <ImageSingleInput name="image" style={styles.img} raw />
+                            <ImageSingleInput name="image" style={styles.img} forAmazon />
                             <FormInput
                                 placeholder="Name"
                                 name="name"
