@@ -149,7 +149,7 @@ function LoginScreen({ navigation }) {
                                 onPress={handleSubmit}
                             />
                             <Button
-                                buttonStyle={styles.button}
+                                buttonStyle={(styles.button, { backgroundColor: "#4DE22F" })}
                                 title="Register"
                                 type="outline"
                                 onPress={() => navigation.navigate("RegisterScreen")}
