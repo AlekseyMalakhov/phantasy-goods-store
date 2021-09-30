@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function UserScreen(props) {
+function UserScreen({ navigation }) {
     const user = useSelector((state) => state.user.user);
     const messages = useSelector((state) => state.user.messages);
     return (
@@ -20,7 +20,9 @@ function UserScreen(props) {
             <Avatar rounded size="xlarge" source={{ uri: user.img }} containerStyle={styles.avatar} />
             <Text style={{ fontSize: 30, marginTop: 20 }}>{user.name}</Text>
             <Text style={{ fontSize: 20, marginTop: 20 }}>{user.email}</Text>
-            <Text style={{ fontSize: 20, marginTop: 20 }}>My messages - ({messages.length})</Text>
+            <Text style={{ fontSize: 20, marginTop: 20 }} onPress={() => navigation.navigate("MessagesScreen")}>
+                My messages - ({messages.length})
+            </Text>
             <Text style={{ fontSize: 20, marginTop: 20 }}>My selling items</Text>
             <Text style={{ fontSize: 20, marginTop: 20 }}>My purchased items</Text>
         </View>
