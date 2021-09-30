@@ -5,6 +5,7 @@ import colors from "../config/colors";
 import messagesAPI from "../api/messages";
 import { useSelector } from "react-redux";
 import { useLinkTo } from "@react-navigation/native";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const styles = StyleSheet.create({
     container: {
@@ -50,6 +51,7 @@ function WriteMessageScreen({ route, navigation }) {
 
     const { item } = route.params;
     const user = useSelector((state) => state.user.user);
+    const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [error, setError] = useState(false);
 
@@ -60,9 +62,11 @@ function WriteMessageScreen({ route, navigation }) {
             text: message,
             date: Date.now(),
         };
+        setLoading(true);
         messagesAPI
             .sendMessage(messageObj)
             .then((status) => {
+                setLoading(false);
                 if (status === 201) {
                     setError(false);
                     navigation.navigate("MessageSentSuccessfully");
@@ -71,6 +75,7 @@ function WriteMessageScreen({ route, navigation }) {
                 }
             })
             .catch((err) => {
+                setLoading(false);
                 setError(true);
                 console.log(err);
             });
@@ -78,24 +83,34 @@ function WriteMessageScreen({ route, navigation }) {
 
     if (user) {
         return (
-            <View style={styles.container}>
-                <Text style={styles.title}>Send message to {item.seller.name}</Text>
-                {error ? (
-                    <Text style={styles.error}>Some error occurred.Message could not be sent. Please try again later or contact administrator.</Text>
-                ) : null}
-                <Input
-                    onChangeText={setMessage}
-                    value={message}
-                    multiline
-                    numberOfLines={4}
-                    inputContainerStyle={styles.messageContainer}
-                    style={styles.message}
-                />
-                <View style={styles.buttons}>
-                    <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={() => navigation.navigate("CardsList")} />
-                    <Button buttonStyle={[styles.button, styles.create]} title="Create" disabled={!message ? true : false} onPress={handleSubmit} />
+            <React.Fragment>
+                <LoadingIndicator visible={loading} />
+                <View style={styles.container}>
+                    <Text style={styles.title}>Send message to {item.seller.name}</Text>
+                    {error ? (
+                        <Text style={styles.error}>
+                            Some error occurred.Message could not be sent. Please try again later or contact administrator.
+                        </Text>
+                    ) : null}
+                    <Input
+                        onChangeText={setMessage}
+                        value={message}
+                        multiline
+                        numberOfLines={4}
+                        inputContainerStyle={styles.messageContainer}
+                        style={styles.message}
+                    />
+                    <View style={styles.buttons}>
+                        <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={() => navigation.navigate("CardsList")} />
+                        <Button
+                            buttonStyle={[styles.button, styles.create]}
+                            title="Create"
+                            disabled={!message ? true : false}
+                            onPress={handleSubmit}
+                        />
+                    </View>
                 </View>
-            </View>
+            </React.Fragment>
         );
     } else {
         return (
