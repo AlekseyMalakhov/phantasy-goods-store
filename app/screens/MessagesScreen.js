@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { useSelector } from "react-redux";
+import Message from "../components/Message";
 
 const styles = StyleSheet.create({
     container: {
@@ -14,7 +15,7 @@ function MessagesScreen(props) {
         <View style={styles.container}>
             <Text style={{ fontSize: 30, marginTop: 20 }}>My messages</Text>
             {messages.map((message) => (
-                <Text key={message.id}>{message.text}</Text>
+                <Message key={message.id} message={message} />
             ))}
         </View>
     );
