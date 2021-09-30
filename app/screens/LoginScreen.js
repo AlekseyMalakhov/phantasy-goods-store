@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, StyleSheet, Text, ImageBackground } from "react-native";
 import FormInput from "../components/forms/FormInput";
 import { Icon, ThemeProvider, Image, Button } from "react-native-elements";
@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import colors from "../config/colors";
 import authAPI from "../api/auth";
 import LoginError from "../components/LoginError";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const styles = StyleSheet.create({
     background: {
@@ -34,6 +35,11 @@ const styles = StyleSheet.create({
     buy: {
         backgroundColor: colors.primaryDarkColor,
     },
+    loading: {
+        height: "20%",
+        width: "20%",
+        marginBottom: 100,
+    },
 });
 
 const validationSchema = Yup.object().shape({
@@ -43,21 +49,40 @@ const validationSchema = Yup.object().shape({
 
 function LoginScreen({ navigation }) {
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const mounted = useRef(false);
+    useEffect(() => {
+        mounted.current = true;
+        return () => (mounted.current = false);
+    });
 
     const handleSubmit = (data) => {
-        authAPI.login(data).then((resp) => {
-            if (resp !== 200) {
-                if (resp === 401) {
-                    setError("Login or password is incorrect");
-                } else {
-                    setError("Some error occurred. Please try later");
+        setLoading(true);
+        authAPI
+            .login(data)
+            .then((resp) => {
+                if (mounted.current) {
+                    setLoading(false);
                 }
-            }
-        });
+                if (resp !== 200) {
+                    if (resp === 401) {
+                        setError("Login or password is incorrect");
+                    } else {
+                        setError("Some error occurred. Please try later");
+                    }
+                }
+            })
+            .catch((err) => {
+                setLoading(false);
+                setError("Some error occurred. Please try later");
+                console.log(err);
+            });
     };
 
     return (
         <ImageBackground style={styles.background} source={require("../assets/main_screen.jpg")} blurRadius={2}>
+            <LoadingIndicator visible={loading} style={styles.loading} />
             <Formik
                 initialValues={{
                     email: "",

@@ -5,7 +5,6 @@ import { View, StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     overlay: {
         position: "absolute",
-        //backgroundColor: "white",
         height: "100%",
         width: "100%",
         zIndex: 1,
@@ -18,13 +17,13 @@ const styles = StyleSheet.create({
     },
 });
 
-function LoadingIndicator({ visible = false }) {
+function LoadingIndicator({ visible = false, ...otherProps }) {
     if (!visible) {
         return null;
     }
     return (
         <View style={styles.overlay}>
-            <View style={styles.container}>
+            <View style={styles.container} {...otherProps}>
                 <LottieView autoPlay loop source={require("../assets/loading.json")} />
             </View>
         </View>

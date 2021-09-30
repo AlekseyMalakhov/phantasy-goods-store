@@ -32,8 +32,9 @@ const createUser = async (req, res) => {
         } else {
             res.status(409).send("Current email already exists");
         }
-    } catch (err) {
-        console.log(err.stack);
+    } catch (error) {
+        res.status(500).send(error.stack);
+        console.log(error.stack);
     }
 };
 
@@ -54,7 +55,8 @@ const login = async (req, res) => {
         const token = jwt.sign(sendUser, "mySuperPrivateKey");
         res.status(200).send(token);
     } catch (error) {
-        console.log(err.stack);
+        res.status(500).send(error.stack);
+        console.log(error.stack);
     }
 };
 
