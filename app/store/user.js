@@ -6,7 +6,7 @@ export const userSlice = createSlice({
         accessToken: "",
         user: null,
         cart: [],
-        messages: [],
+        messages: null,
     },
     reducers: {
         changeAccessToken: (state, action) => {

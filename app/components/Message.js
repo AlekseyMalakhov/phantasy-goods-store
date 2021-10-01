@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const styles = StyleSheet.create({
     incomingContainer: {
-        backgroundColor: "#40ff9c",
+        backgroundColor: "#94ffc7",
         padding: 10,
         margin: 10,
         marginRight: 40,
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     date: {
-        color: "grey",
+        color: "#606160",
         fontSize: 13,
     },
 });
@@ -48,26 +48,20 @@ const getTimeString = (messageDate) => {
 function Message({ message }) {
     const user = useSelector((state) => state.user.user);
 
-    const [incoming, setIncoming] = useState(false);
     const [time, setTime] = useState("");
 
     useEffect(() => {
-        if (user.id === message.to_id) {
-            setIncoming(true);
-        } else {
-            setIncoming(false);
-        }
         const t = getTimeString(message.date);
         setTime(t);
     }, []);
 
     console.log(message);
 
-    if (incoming) {
+    if (message.type === "incoming") {
         return (
             <View style={styles.incomingContainer}>
                 <View style={styles.info}>
-                    <Text style={styles.date}>From: {message.from_id}</Text>
+                    <Text style={styles.date}>From: {message.from_id_name}</Text>
                     <Text style={styles.date}>{time}</Text>
                 </View>
                 <Text style={{ display: "flex" }}>{message.text}</Text>
@@ -77,7 +71,7 @@ function Message({ message }) {
         return (
             <View style={styles.outgoingContainer}>
                 <View style={styles.info}>
-                    <Text style={styles.date}>To: {message.to_id}</Text>
+                    <Text style={styles.date}>To: {message.to_id_name}</Text>
                     <Text style={styles.date}>{time}</Text>
                 </View>
                 <Text style={{ display: "flex" }}>{message.text}</Text>

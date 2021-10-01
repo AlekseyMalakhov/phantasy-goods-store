@@ -79,13 +79,31 @@ const sendMessage = async (req, res) => {
 
 const getMessages = async (req, res) => {
     const userId = req.query.userId;
-    const query = {
-        text: "SELECT * FROM messages WHERE from_id = $1 OR to_id = $1",
+    const outgoingMessagesQuery = {
+        text: `SELECT messages.id, from_id, to_id, text, date, name AS to_id_name, type 
+                FROM messages 
+                INNER JOIN users ON to_id = users.id 
+                INNER JOIN message_types ON type = 'outgoing' 
+                WHERE from_id = $1`,
+        values: [userId],
+    };
+    const incomingMessagesQuery = {
+        text: `SELECT messages.id, from_id, to_id, text, date, name AS from_id_name, type 
+                FROM messages 
+                INNER JOIN users ON from_id = users.id 
+                INNER JOIN message_types ON type = 'incoming' 
+                WHERE to_id = $1`,
         values: [userId],
     };
     try {
-        const response = await pool.query(query);
-        res.status(200).send(response.rows);
+        const incoming = await pool.query(outgoingMessagesQuery);
+        const outgoing = await pool.query(incomingMessagesQuery);
+        const messages = {
+            incoming: incoming.rows,
+            outgoing: outgoing.rows,
+        };
+        console.log(messages);
+        res.status(200).send(messages);
     } catch (error) {
         res.status(500).send(error.stack);
         console.log(error.stack);

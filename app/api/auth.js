@@ -69,6 +69,8 @@ const createAccount = (formData) => {
         .catch((error) => error.response.status);
 };
 
+login({ email: "test2@ttt.com", password: "12345" });
+
 const authAPI = {
     login,
     logout,
