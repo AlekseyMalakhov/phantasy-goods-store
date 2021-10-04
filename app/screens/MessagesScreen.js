@@ -17,7 +17,6 @@ function MessagesScreen(props) {
     useEffect(() => {
         const arr = [...messages.incoming, ...messages.outgoing];
         setMessagesList(arr);
-        console.log(arr);
     }, [messages]);
     return (
         <View style={styles.container}>

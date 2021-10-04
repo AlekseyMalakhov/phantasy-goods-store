@@ -59,7 +59,7 @@ function Sidebar(props) {
                 }}
             />
             <Drawer.Screen name="Items" component={AppNavigator} />
-            <Drawer.Screen name="CreateItemScreen" component={CreateItemScreen} />
+            <Drawer.Screen name="CreateItemScreen" component={CreateItemScreen} options={{ title: "Add item to sell" }} />
         </Drawer.Navigator>
     );
 }

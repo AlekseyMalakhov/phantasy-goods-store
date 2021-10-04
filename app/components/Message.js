@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { useSelector } from "react-redux";
 
 const styles = StyleSheet.create({
     incomingContainer: {
@@ -46,16 +45,12 @@ const getTimeString = (messageDate) => {
 };
 
 function Message({ message }) {
-    const user = useSelector((state) => state.user.user);
-
     const [time, setTime] = useState("");
 
     useEffect(() => {
         const t = getTimeString(message.date);
         setTime(t);
     }, []);
-
-    console.log(message);
 
     if (message.type === "incoming") {
         return (

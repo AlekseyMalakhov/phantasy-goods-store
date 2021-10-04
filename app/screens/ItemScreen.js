@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         justifyContent: "center",
         alignItems: "center",
-        marginVertical: 10,
+        marginTop: 10,
     },
     button: {
         marginRight: 10,
@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: colors.textLight,
     },
+    type: {
+        color: colors.textLight,
+        marginBottom: 10,
+    },
 });
 
 function ItemScreen({ route, navigation }) {
@@ -49,6 +53,7 @@ function ItemScreen({ route, navigation }) {
         <React.Fragment>
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
                 <Text style={styles.title}>{item.name}</Text>
+                <Text style={styles.type}>{item.type}</Text>
                 <ImageCarousel images={item.images} />
                 <View style={{ paddingHorizontal: 20 }}>
                     <Text style={{ marginBottom: 10, marginTop: 10 }}>{item.description}</Text>

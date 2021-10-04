@@ -31,7 +31,7 @@ function ImageCarousel({ images }) {
                     this.numberCarousel.scrollToIndex(index);
                 }}
             >
-                <Image source={item} />
+                <Image source={item.uri} />
             </TouchableOpacity>
         );
     };

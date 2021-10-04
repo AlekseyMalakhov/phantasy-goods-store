@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        marginBottom: 5,
+        marginBottom: 0,
         marginTop: 5,
     },
     button: {
@@ -38,6 +38,12 @@ const styles = StyleSheet.create({
     shareButtonContainer: {
         position: "absolute",
         right: 10,
+        top: 10,
+    },
+    type: {
+        textAlign: "center",
+        color: colors.textLight,
+        marginBottom: 5,
     },
 });
 
@@ -53,8 +59,9 @@ function AppCard({ item, navigation }) {
             <Card.Title style={styles.title}>
                 <Text>{item.name}</Text>
             </Card.Title>
+            <Text style={styles.type}>{item.type}</Text>
             <Card.Divider />
-            <Card.Image source={item.images[0]} onPress={() => navigation.navigate("ItemScreen", { item })}></Card.Image>
+            <Card.Image source={item.images[0].uri} onPress={() => navigation.navigate("ItemScreen", { item })}></Card.Image>
             <View style={{ paddingHorizontal: 10 }}>
                 <Text style={{ marginBottom: 10, marginTop: 10 }} numberOfLines={5}>
                     {item.description}
