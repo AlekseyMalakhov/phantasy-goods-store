@@ -34,7 +34,13 @@ const uploadImgToAmazon = multer({
                     cb(null, Date.now().toString() + "_min" + file.originalname);
                 },
                 transform: function (req, file, cb) {
-                    cb(null, sharp().resize(150, 150).jpeg());
+                    console.log(req.route.path);
+                    if (req.route.path === "/api/createAccount") {
+                        cb(null, sharp().resize(150, 150).jpeg());
+                    }
+                    if (req.route.path === "/api/addItem") {
+                        cb(null, sharp().resize(400, 400).jpeg());
+                    }
                 },
             },
         ],
@@ -46,6 +52,7 @@ app.post("/api/login", db.login);
 app.post("/api/createAccount", uploadImgToAmazon.single("img"), db.createUser);
 app.post("/api/sendMessage", db.sendMessage);
 app.get("/api/getMessages", db.getMessages);
+app.post("/api/addItem", uploadImgToAmazon.array("images", 5), db.addItem);
 
 //start the server
 app.listen(port, () => {

@@ -102,7 +102,6 @@ const getMessages = async (req, res) => {
             incoming: incoming.rows,
             outgoing: outgoing.rows,
         };
-        console.log(messages);
         res.status(200).send(messages);
     } catch (error) {
         res.status(500).send(error.stack);
@@ -110,9 +109,19 @@ const getMessages = async (req, res) => {
     }
 };
 
+const addItem = async (req, res) => {
+    //console.log(req.body);
+    if (req.files) {
+        console.log(req.files);
+        req.files.forEach((file) => console.log(file.transforms[0].location));
+    }
+    res.status(200).send("ok");
+};
+
 module.exports = {
     createUser,
     login,
     sendMessage,
     getMessages,
+    addItem,
 };

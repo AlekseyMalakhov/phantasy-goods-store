@@ -9,6 +9,9 @@ import FormImagePicker from "../components/forms/FormImagePicker";
 import { Picker } from "@react-native-picker/picker";
 import AppFormPicker from "../components/forms/AppFormPicker";
 import typesOfItems from "../config/typesOfItems";
+import { useSelector } from "react-redux";
+import { useLinkTo } from "@react-navigation/native";
+import itemsAPI from "../api/items";
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +19,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         flex: 1,
     },
-    title2: {
+    title: {
         textAlign: "center",
         marginTop: 15,
         marginBottom: 15,
@@ -41,14 +44,52 @@ const styles = StyleSheet.create({
 const validationSchema = Yup.object().shape({
     images: Yup.array().min(1, "Please select at least one image"),
     name: Yup.string().required().label("Name"),
-    type: Yup.object().required().label("Type"),
+    type: Yup.string().required().label("Type"),
     description: Yup.string().required().label("Description"),
     price: Yup.number().required().label("Price").typeError("Price must be a number"),
 });
 
 function CreateItemScreen({ navigation }) {
-    const submit = (values) => {
-        console.log(values);
+    const linkTo = useLinkTo();
+    const user = useSelector((state) => state.user.user);
+    const submit = (item) => {
+        item.seller = {
+            id: user.id,
+            name: user.name,
+        };
+
+        //setError("");
+
+        const textData = { ...item };
+        delete textData.images;
+
+        const textJSONObj = JSON.stringify(textData);
+        const imgs = item.images.map((image) => image.uri);
+
+        const formData = new FormData();
+        formData.append("text", textJSONObj);
+
+        for (let x in imgs) {
+            formData.append("images", imgs[x]);
+        }
+
+        itemsAPI
+            .addItem(formData)
+            .then((status) => {
+                console.log(status);
+                // setLoading(false);
+                // if (status === 201) {
+                //     setError(false);
+                //     navigation.navigate("MessageSentSuccessfully");
+                // } else {
+                //     setError(true);
+                // }
+            })
+            .catch((err) => {
+                //setLoading(false);
+                //setError(true);
+                console.log(err);
+            });
     };
 
     const reset = () => {
@@ -58,44 +99,53 @@ function CreateItemScreen({ navigation }) {
         });
     };
 
-    return (
-        <View style={styles.container}>
-            <ScrollView>
-                <Text style={styles.title2}>Create item to sell</Text>
-                <Formik
-                    initialValues={{
-                        images: [],
-                        name: "",
-                        type: typesOfItems[0],
-                        description: "",
-                        price: "",
-                    }}
-                    onSubmit={submit}
-                    onReset={reset}
-                    validationSchema={validationSchema}
-                >
-                    {({ handleSubmit, handleReset }) => (
-                        <React.Fragment>
-                            <FormImagePicker name="images" />
+    if (user) {
+        return (
+            <View style={styles.container}>
+                <ScrollView>
+                    <Text style={styles.title}>Create item to sell</Text>
+                    <Formik
+                        initialValues={{
+                            images: [],
+                            name: "",
+                            type: typesOfItems[0],
+                            description: "",
+                            price: "",
+                        }}
+                        onSubmit={submit}
+                        onReset={reset}
+                        validationSchema={validationSchema}
+                    >
+                        {({ handleSubmit, handleReset }) => (
+                            <React.Fragment>
+                                <FormImagePicker name="images" forAmazon />
 
-                            <FormInput placeholder="Name" name="name" style={{ marginTop: 10 }} />
-                            <AppFormPicker name="type" mode="dropdown">
-                                {typesOfItems.map((type) => (
-                                    <Picker.Item label={type.name} value={type} style={{ fontSize: 18 }} key={type.id} />
-                                ))}
-                            </AppFormPicker>
-                            <FormInput placeholder="Price" name="price" />
-                            <FormInput placeholder="Description" name="description" multiline numberOfLines={4} />
-                            <View style={styles.buttons}>
-                                <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={handleReset} />
-                                <Button buttonStyle={[styles.button, styles.create]} title="Create" onPress={handleSubmit} />
-                            </View>
-                        </React.Fragment>
-                    )}
-                </Formik>
-            </ScrollView>
-        </View>
-    );
+                                <FormInput placeholder="Name" name="name" style={{ marginTop: 10 }} />
+                                <AppFormPicker name="type" mode="dropdown">
+                                    {typesOfItems.map((type) => (
+                                        <Picker.Item label={type} value={type} style={{ fontSize: 18 }} key={type} />
+                                    ))}
+                                </AppFormPicker>
+                                <FormInput placeholder="Price" name="price" keyboardType="number-pad" />
+                                <FormInput placeholder="Description" name="description" multiline numberOfLines={4} />
+                                <View style={styles.buttons}>
+                                    <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={handleReset} />
+                                    <Button buttonStyle={[styles.button, styles.create]} title="Create" onPress={handleSubmit} />
+                                </View>
+                            </React.Fragment>
+                        )}
+                    </Formik>
+                </ScrollView>
+            </View>
+        );
+    } else {
+        return (
+            <View style={(styles.container, { alignItems: "center" })}>
+                <Text style={styles.title}>To add item to sell please login</Text>
+                <Button buttonStyle={[styles.button, styles.create, { marginTop: 20 }]} title="Login" onPress={() => linkTo("/User")} />
+            </View>
+        );
+    }
 }
 
 export default CreateItemScreen;
