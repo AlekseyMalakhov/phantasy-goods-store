@@ -34,7 +34,6 @@ const uploadImgToAmazon = multer({
                     cb(null, Date.now().toString() + "_min" + file.originalname);
                 },
                 transform: function (req, file, cb) {
-                    console.log(req.route.path);
                     if (req.route.path === "/api/createAccount") {
                         cb(null, sharp().resize(150, 150).jpeg());
                     }

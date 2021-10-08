@@ -53,10 +53,7 @@ function CreateItemScreen({ navigation }) {
     const linkTo = useLinkTo();
     const user = useSelector((state) => state.user.user);
     const submit = (item) => {
-        item.seller = {
-            id: user.id,
-            name: user.name,
-        };
+        item.seller = user.id;
 
         //setError("");
 

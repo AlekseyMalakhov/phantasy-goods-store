@@ -110,12 +110,28 @@ const getMessages = async (req, res) => {
 };
 
 const addItem = async (req, res) => {
-    //console.log(req.body);
+    let images = [];
     if (req.files) {
-        console.log(req.files);
-        req.files.forEach((file) => console.log(file.transforms[0].location));
+        images = req.files.map((file) => file.transforms[0].location);
     }
-    res.status(200).send("ok");
+    images = JSON.stringify(images);
+    const { name, type, description, price, seller } = JSON.parse(req.body.text);
+    try {
+        const query = {
+            text: "INSERT INTO items (name, type, description, price, seller, images) VALUES($1, $2, $3, $4, $5, $6) RETURNING id",
+            values: [name, type, description, price, seller, images],
+        };
+        pool.query(query, (error, results) => {
+            if (error) {
+                res.status(500).send(error.detail);
+                return;
+            }
+            res.status(201).send(`Item added with ID: ${results.rows[0].id}`);
+        });
+    } catch (error) {
+        res.status(500).send(error.stack);
+        console.log(error.stack);
+    }
 };
 
 module.exports = {
