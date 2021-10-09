@@ -52,6 +52,7 @@ app.post("/api/createAccount", uploadImgToAmazon.single("img"), db.createUser);
 app.post("/api/sendMessage", db.sendMessage);
 app.get("/api/getMessages", db.getMessages);
 app.post("/api/addItem", uploadImgToAmazon.array("images", 5), db.addItem);
+app.get("/api/getItems", db.getItems);
 
 //start the server
 app.listen(port, () => {

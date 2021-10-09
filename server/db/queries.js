@@ -123,10 +123,42 @@ const addItem = async (req, res) => {
         };
         pool.query(query, (error, results) => {
             if (error) {
-                res.status(500).send(error.detail);
+                console.log(error);
+                res.status(500).send(error);
                 return;
             }
             res.status(201).send(`Item added with ID: ${results.rows[0].id}`);
+        });
+    } catch (error) {
+        console.log(error.stack);
+        res.status(500).send(error.stack);
+    }
+};
+
+const getItems = async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM items");
+        const _items = result.rows.map((item) => {
+            item.images = JSON.parse(item.images);
+            return item;
+        });
+
+        Promise.all(
+            _items.map(async (item) => {
+                const sellerQuery1 = {
+                    text: "SELECT * FROM users WHERE id = $1",
+                    values: [item.seller],
+                };
+                const sellerRow = await pool.query(sellerQuery1);
+                const seller = {
+                    id: item.seller,
+                    name: sellerRow.rows[0].name,
+                };
+                item.seller = seller;
+                return item;
+            })
+        ).then((items) => {
+            res.status(200).send(items);
         });
     } catch (error) {
         res.status(500).send(error.stack);
@@ -140,4 +172,5 @@ module.exports = {
     sendMessage,
     getMessages,
     addItem,
+    getItems,
 };
