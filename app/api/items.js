@@ -1,4 +1,8 @@
 import client from "./client";
+import { store } from "../store/store";
+import { changeItems } from "../store/items";
+
+const dispatch = store.dispatch;
 
 const addItem = (formData) => {
     return client
@@ -10,12 +14,22 @@ const addItem = (formData) => {
 };
 
 const getItems = () => {
-    return client
+    client
         .get("/getItems")
         .then((response) => {
-            return response;
+            //setLoading(false);
+            dispatch(changeItems(response.data));
+            // if (status === 201) {
+            //     setError(false);
+            // } else {
+            //     setError(true);
+            // }
         })
-        .catch((error) => error.response.status);
+        .catch((err) => {
+            //setLoading(false);
+            //setError("Some error occurred. Please try later");
+            console.log(err);
+        });
 };
 
 const itemsAPI = {

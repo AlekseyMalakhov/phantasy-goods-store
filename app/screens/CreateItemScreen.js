@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
 import colors from "../config/colors";
@@ -12,6 +12,7 @@ import typesOfItems from "../config/typesOfItems";
 import { useSelector } from "react-redux";
 import { useLinkTo } from "@react-navigation/native";
 import itemsAPI from "../api/items";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const styles = StyleSheet.create({
     container: {
@@ -39,6 +40,16 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginBottom: 20,
     },
+    loading: {
+        height: "20%",
+        width: "20%",
+        marginBottom: 100,
+    },
+    error: {
+        color: "red",
+        marginBottom: 20,
+        textAlign: "center",
+    },
 });
 
 const validationSchema = Yup.object().shape({
@@ -50,12 +61,13 @@ const validationSchema = Yup.object().shape({
 });
 
 function CreateItemScreen({ navigation }) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
     const linkTo = useLinkTo();
     const user = useSelector((state) => state.user.user);
-    const submit = (item) => {
+    const submit = (item, actions) => {
+        setError("");
         item.seller = user.id;
-
-        //setError("");
 
         const textData = { ...item };
         delete textData.images;
@@ -70,21 +82,23 @@ function CreateItemScreen({ navigation }) {
             formData.append("images", imgs[x]);
         }
 
+        setLoading(true);
         itemsAPI
             .addItem(formData)
             .then((status) => {
                 console.log(status);
-                // setLoading(false);
-                // if (status === 201) {
-                //     setError(false);
-                //     navigation.navigate("MessageSentSuccessfully");
-                // } else {
-                //     setError(true);
-                // }
+                setLoading(false);
+                actions.resetForm();
+                if (status === 201) {
+                    itemsAPI.getItems();
+                    navigation.navigate("ItemAddedSuccessfully");
+                } else {
+                    setError("Some error occurred. Please try again later");
+                }
             })
             .catch((err) => {
-                //setLoading(false);
-                //setError(true);
+                setLoading(false);
+                setError("Some error occurred. Please try again later");
                 console.log(err);
             });
     };
@@ -99,6 +113,7 @@ function CreateItemScreen({ navigation }) {
     if (user) {
         return (
             <View style={styles.container}>
+                <LoadingIndicator visible={loading} style={styles.loading} />
                 <ScrollView>
                     <Text style={styles.title}>Create item to sell</Text>
                     <Formik
@@ -110,10 +125,9 @@ function CreateItemScreen({ navigation }) {
                             price: "",
                         }}
                         onSubmit={submit}
-                        onReset={reset}
                         validationSchema={validationSchema}
                     >
-                        {({ handleSubmit, handleReset }) => (
+                        {({ handleSubmit }) => (
                             <React.Fragment>
                                 <FormImagePicker name="images" forAmazon />
 
@@ -125,8 +139,9 @@ function CreateItemScreen({ navigation }) {
                                 </AppFormPicker>
                                 <FormInput placeholder="Price" name="price" keyboardType="number-pad" />
                                 <FormInput placeholder="Description" name="description" multiline numberOfLines={4} />
+                                {error ? <Text style={styles.error}>{error}</Text> : null}
                                 <View style={styles.buttons}>
-                                    <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={handleReset} />
+                                    <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={reset} />
                                     <Button buttonStyle={[styles.button, styles.create]} title="Create" onPress={handleSubmit} />
                                 </View>
                             </React.Fragment>

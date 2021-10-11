@@ -6,6 +6,7 @@ import ItemScreen from "../screens/ItemScreen";
 import WriteMessageScreen from "../screens/WriteMessageScreen";
 import MessageSentSuccessfully from "../screens/MessageSentSuccessfully";
 import MessagesScreen from "../screens/MessagesScreen";
+import ItemAddedSuccessfully from "../screens/ItemAddedSuccessfully";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ const AppNavigator = () => {
             <Stack.Screen name="WriteMessageScreen" component={WriteMessageScreen} />
             <Stack.Screen name="MessageSentSuccessfully" component={MessageSentSuccessfully} />
             <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
+            <Stack.Screen name="ItemAddedSuccessfully" component={ItemAddedSuccessfully} />
         </Stack.Navigator>
     );
 };
