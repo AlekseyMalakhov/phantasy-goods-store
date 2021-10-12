@@ -18,7 +18,7 @@ function OrderTable({ items }) {
         let total = 0;
         if (items) {
             for (let i = 0; i < items.length; i++) {
-                total = total + items[i].price;
+                total = total + items[i].price * items[i].number;
             }
         }
         setTotal(total);

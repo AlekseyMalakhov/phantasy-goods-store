@@ -17,7 +17,15 @@ export const userSlice = createSlice({
         },
         addItemToCart: (state, action) => {
             const newCart = [...state.cart];
-            newCart.push(action.payload);
+            const item = { ...action.payload };
+
+            const dublicate = newCart.findIndex((existingItem) => existingItem.id === item.id);
+            if (dublicate === -1) {
+                item.number = 1;
+                newCart.push(item);
+            } else {
+                newCart[dublicate].number++;
+            }
             state.cart = newCart;
         },
         removeItemFromCart: (state, action) => {

@@ -4,6 +4,8 @@ import { Button } from "react-native-elements";
 import colors from "../config/colors";
 import ShareButton from "../components/ShareButton";
 import ImageCarousel from "../components/ImageCarousel";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "../store/user";
 
 const styles = StyleSheet.create({
     container: {
@@ -49,6 +51,12 @@ const styles = StyleSheet.create({
 
 function ItemScreen({ route, navigation }) {
     const { item } = route.params;
+    const dispatch = useDispatch();
+
+    const addToCart = () => {
+        dispatch(addItemToCart(item));
+    };
+
     return (
         <React.Fragment>
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: "center" }}>
@@ -62,7 +70,7 @@ function ItemScreen({ route, navigation }) {
                         <Text style={styles.price}>{item.price + "$"}</Text>
                         <View style={{ flexDirection: "row" }}>
                             <ShareButton style={{ marginRight: 20 }} />
-                            <Button buttonStyle={styles.button} title="Buy" onPress={() => navigation.navigate("BuyScreen", { item })} />
+                            <Button buttonStyle={styles.button} title="Buy" onPress={addToCart} />
                         </View>
                     </View>
                 </View>

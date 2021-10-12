@@ -40,14 +40,18 @@ function OrderRaw({ item }) {
     return (
         <TouchableOpacity style={styles.container} onLongPress={askToDelete}>
             <View style={[styles.cell, styles.flex2]}>
-                <Image source={item.images[0]} style={{ width: 80, height: 80 }} onPress={() => navigation.navigate("ItemScreen", { item })} />
+                <Image
+                    source={{ uri: item.images[0] }}
+                    style={{ width: 80, height: 80 }}
+                    onPress={() => navigation.navigate("ItemScreen", { item })}
+                />
             </View>
             <View style={[styles.cell, styles.flex2]}>
                 <Text>{item.name}</Text>
                 <Text style={{ color: colors.textLight, marginTop: 15 }}>{item.seller.name}</Text>
             </View>
             <View style={styles.cell}>
-                <Text>1</Text>
+                <Text>{item.number}</Text>
             </View>
             <View style={styles.cell}>
                 <Text>{item.price + "$"}</Text>
