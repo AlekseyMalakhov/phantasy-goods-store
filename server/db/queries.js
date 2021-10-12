@@ -137,32 +137,28 @@ const addItem = async (req, res) => {
 
 const getItems = async (req, res) => {
     try {
-        const result = await pool.query("SELECT * FROM items");
-        const _items = result.rows.map((item) => {
+        const result1 = await pool.query("SELECT * FROM items");
+        const _items = result1.rows.map((item) => {
             item.images = JSON.parse(item.images);
             return item;
         });
 
-        Promise.all(
-            _items.map(async (item) => {
-                const sellerQuery1 = {
-                    text: "SELECT * FROM users WHERE id = $1",
-                    values: [item.seller],
-                };
-                const sellerRow = await pool.query(sellerQuery1);
-                const seller = {
-                    id: item.seller,
-                    name: sellerRow.rows[0].name,
-                };
-                item.seller = seller;
-                return item;
-            })
-        ).then((items) => {
-            res.status(200).send(items);
+        const result2 = await pool.query("SELECT * FROM users");
+        const users = result2.rows;
+
+        const items = _items.map((item) => {
+            const seller = users.find((user) => item.seller === user.id);
+            item.seller = {
+                id: seller.id,
+                name: seller.name,
+            };
+            return item;
         });
+
+        res.status(200).send(items);
     } catch (error) {
-        res.status(500).send(error.stack);
-        console.log(error.stack);
+        res.status(500).send(error);
+        console.log(error);
     }
 };
 

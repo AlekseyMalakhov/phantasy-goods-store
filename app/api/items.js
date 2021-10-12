@@ -1,6 +1,6 @@
 import client from "./client";
 import { store } from "../store/store";
-import { changeItems } from "../store/items";
+import { changeItems, changeLoadingAnimation, changeError } from "../store/items";
 
 const dispatch = store.dispatch;
 
@@ -14,20 +14,21 @@ const addItem = (formData) => {
 };
 
 const getItems = () => {
+    dispatch(changeLoadingAnimation(true));
+    dispatch(changeError(""));
     client
         .get("/getItems")
         .then((response) => {
-            //setLoading(false);
-            dispatch(changeItems(response.data));
-            // if (status === 201) {
-            //     setError(false);
-            // } else {
-            //     setError(true);
-            // }
+            dispatch(changeLoadingAnimation(false));
+            if (response.status === 200) {
+                dispatch(changeItems(response.data));
+            } else {
+                dispatch(changeError("Some error occurred. Please try later"));
+            }
         })
         .catch((err) => {
-            //setLoading(false);
-            //setError("Some error occurred. Please try later");
+            dispatch(changeLoadingAnimation(false));
+            dispatch(changeError("Some error occurred. Please try later"));
             console.log(err);
         });
 };

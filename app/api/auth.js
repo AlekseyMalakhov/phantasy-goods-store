@@ -46,7 +46,7 @@ const login = (data) => {
             messagesAPI.getMessages(user.id);
             return response.status;
         })
-        .catch((error) => error.response.status);
+        .catch((error) => error);
 };
 
 const logout = () => {
@@ -61,7 +61,7 @@ const createAccount = (formData) => {
         .then((response) => {
             return response.status;
         })
-        .catch((error) => error.response.status);
+        .catch((error) => error);
 };
 
 login({ email: "jim@test.com", password: "12345" });
