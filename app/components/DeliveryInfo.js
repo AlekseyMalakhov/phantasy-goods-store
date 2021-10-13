@@ -5,6 +5,9 @@ import colors from "../config/colors";
 import FormInput from "./forms/FormInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { emptyCart } from "../store/user";
 
 const styles = StyleSheet.create({
     container: {},
@@ -49,9 +52,22 @@ const validationSchema = Yup.object().shape({
     phone: Yup.string().required().label("Phone"),
 });
 
-function DeliveryInfo(props) {
-    const handleSubmit = (e) => {
-        console.log(e);
+function DeliveryInfo({ navigation }) {
+    const dispatch = useDispatch();
+    const cart = useSelector((state) => state.user.cart);
+
+    const handleSubmit = (values) => {
+        values.items = cart;
+        console.log(values);
+        dispatch(emptyCart());
+        navigation.navigate("OrderSentSuccessfully");
+    };
+
+    const reset = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "Items" }],
+        });
     };
 
     return (
@@ -84,7 +100,7 @@ function DeliveryInfo(props) {
                         </View>
                         <FormInput placeholder="Comment" name="comment" multiline numberOfLines={4} />
                         <View style={styles.buttons}>
-                            <Button buttonStyle={styles.button} title="Cancel" type="outline" />
+                            <Button buttonStyle={styles.button} title="Cancel" type="outline" onPress={reset} />
                             <Button buttonStyle={[styles.button, styles.buy]} title="Send order" onPress={handleSubmit} />
                         </View>
                     </React.Fragment>

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function BuyScreen() {
+function BuyScreen({ navigation }) {
     const cart = useSelector((state) => state.user.cart);
     return (
         <View style={styles.container}>
@@ -26,7 +26,8 @@ function BuyScreen() {
                 <ScrollView>
                     <Text style={styles.title}>Order conformation</Text>
                     <OrderTable items={cart} />
-                    <DeliveryInfo />
+                    <Text style={{ marginTop: 10, marginLeft: 10 }}>Long press on item to remove it from the list</Text>
+                    <DeliveryInfo navigation={navigation} />
                 </ScrollView>
             ) : (
                 <Text style={styles.title}>Cart is empty</Text>
