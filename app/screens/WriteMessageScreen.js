@@ -77,7 +77,7 @@ function WriteMessageScreen({ route, navigation }) {
             .catch((err) => {
                 setLoading(false);
                 setError(true);
-                console.log(err);
+                console.log(err.message);
             });
     };
 

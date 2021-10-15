@@ -24,8 +24,6 @@ function CardsList({ navigation, userItems }) {
     const loading = useSelector((state) => state.items.loadingAnimation);
     const error = useSelector((state) => state.items.error);
 
-    console.log(userItems);
-
     return (
         <React.Fragment>
             {error ? <Text style={styles.error}>{error}</Text> : null}

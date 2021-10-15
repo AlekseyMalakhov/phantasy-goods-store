@@ -15,7 +15,10 @@ function MessagesScreen(props) {
     const [messagesList, setMessagesList] = useState([]);
 
     useEffect(() => {
-        const arr = [...messages.incoming, ...messages.outgoing];
+        let arr = [];
+        if (messages) {
+            arr = [...messages.incoming, ...messages.outgoing];
+        }
         setMessagesList(arr);
     }, [messages]);
     return (
@@ -24,6 +27,7 @@ function MessagesScreen(props) {
             {messagesList.map((message) => (
                 <Message key={message.id} message={message} />
             ))}
+            {messagesList.length === 0 ? <Text style={{ marginTop: 20 }}>You don't have any messages</Text> : null}
         </View>
     );
 }

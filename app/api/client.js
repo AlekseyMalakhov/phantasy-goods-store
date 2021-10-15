@@ -11,7 +11,7 @@ export const createAuthClient = (authToken) => {
     authClient = axios.create({
         baseURL: baseURL,
         headers: {
-            Authorization: Bearer + authToken,
+            Authorization: "Bearer " + authToken,
         },
     });
 };

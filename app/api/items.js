@@ -10,7 +10,7 @@ const addItem = (formData) => {
         .then((response) => {
             return response.status;
         })
-        .catch((error) => error.response.status);
+        .catch((error) => console.log(error.message));
 };
 
 const getItems = () => {
@@ -29,7 +29,7 @@ const getItems = () => {
         .catch((err) => {
             dispatch(changeLoadingAnimation(false));
             dispatch(changeError("Some error occurred. Please try later"));
-            console.log(err);
+            console.log(err.message);
         });
 };
 

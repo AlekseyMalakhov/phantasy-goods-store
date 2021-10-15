@@ -1,13 +1,17 @@
 import { authClient } from "./client";
+import client from "./client";
 import { store } from "../store/store";
 import { changeMessages } from "../store/user";
 
 const dispatch = store.dispatch;
 
 const getMessages = (userId) => {
-    authClient.get("/getMessages?userId=" + userId).then((response) => {
-        dispatch(changeMessages(response.data));
-    });
+    authClient
+        .get("/getMessages?userId=" + userId)
+        .then((response) => {
+            dispatch(changeMessages(response.data));
+        })
+        .catch((error) => console.log(error.message));
 };
 
 const sendMessage = (data) => {
@@ -16,7 +20,7 @@ const sendMessage = (data) => {
         .then((response) => {
             return response.status;
         })
-        .catch((error) => error.response.status);
+        .catch((error) => error);
 };
 
 const messagesAPI = {

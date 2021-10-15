@@ -87,7 +87,7 @@ function RegisterScreen({ navigation }) {
             .catch((err) => {
                 setLoading(false);
                 setError("Some error occurred. Please try later");
-                console.log(err);
+                console.log(err.message);
             });
     };
 
