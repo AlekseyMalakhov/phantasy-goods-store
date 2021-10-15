@@ -1,5 +1,4 @@
 import { authClient } from "./client";
-import client from "./client";
 import { store } from "../store/store";
 import { changeMessages } from "../store/user";
 
@@ -15,12 +14,9 @@ const getMessages = (userId) => {
 };
 
 const sendMessage = (data) => {
-    return authClient
-        .post("/sendMessage", data)
-        .then((response) => {
-            return response.status;
-        })
-        .catch((error) => error);
+    return authClient.post("/sendMessage", data).then((response) => {
+        return response.status;
+    });
 };
 
 const messagesAPI = {

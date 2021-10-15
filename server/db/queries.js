@@ -1,5 +1,6 @@
 const Pool = require("pg").Pool;
 const jwt = require("jsonwebtoken");
+const accessTokenSecret = require("../accessTokenSecret");
 
 const connectionString = "postgres://zrhjogpc:RKMN42zFlEorpu5PbVPxzCsg_U5jInQZ@hattie.db.elephantsql.com/zrhjogpc";
 const pool = new Pool({ connectionString });
@@ -37,8 +38,6 @@ const createUser = async (req, res) => {
         console.log(error.stack);
     }
 };
-
-const accessTokenSecret = "mySuperPrivateKey";
 
 const login = async (req, res) => {
     const { email, password } = req.body;
@@ -79,47 +78,35 @@ const sendMessage = async (req, res) => {
     }
 };
 
-const getMessages = (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-        const token = authHeader.split(" ")[1];
-
-        jwt.verify(token, accessTokenSecret, async (err) => {
-            if (err) {
-                return res.sendStatus(403);
-            }
-            const userId = req.query.userId;
-            const outgoingMessagesQuery = {
-                text: `SELECT messages.id, from_id, to_id, text, date, name AS to_id_name, type 
+const getMessages = async (req, res) => {
+    const userId = req.query.userId;
+    const outgoingMessagesQuery = {
+        text: `SELECT messages.id, from_id, to_id, text, date, name AS to_id_name, type 
                 FROM messages 
                 INNER JOIN users ON to_id = users.id 
                 INNER JOIN message_types ON type = 'outgoing' 
                 WHERE from_id = $1`,
-                values: [userId],
-            };
-            const incomingMessagesQuery = {
-                text: `SELECT messages.id, from_id, to_id, text, date, name AS from_id_name, type 
+        values: [userId],
+    };
+    const incomingMessagesQuery = {
+        text: `SELECT messages.id, from_id, to_id, text, date, name AS from_id_name, type 
                 FROM messages 
                 INNER JOIN users ON from_id = users.id 
                 INNER JOIN message_types ON type = 'incoming' 
                 WHERE to_id = $1`,
-                values: [userId],
-            };
-            try {
-                const incoming = await pool.query(outgoingMessagesQuery);
-                const outgoing = await pool.query(incomingMessagesQuery);
-                const messages = {
-                    incoming: incoming.rows,
-                    outgoing: outgoing.rows,
-                };
-                res.status(200).send(messages);
-            } catch (error) {
-                res.status(500).send(error.stack);
-                console.log(error.stack);
-            }
-        });
-    } else {
-        res.sendStatus(401);
+        values: [userId],
+    };
+    try {
+        const incoming = await pool.query(outgoingMessagesQuery);
+        const outgoing = await pool.query(incomingMessagesQuery);
+        const messages = {
+            incoming: incoming.rows,
+            outgoing: outgoing.rows,
+        };
+        res.status(200).send(messages);
+    } catch (error) {
+        res.status(500).send(error.stack);
+        console.log(error.stack);
     }
 };
 

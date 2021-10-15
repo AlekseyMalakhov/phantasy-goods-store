@@ -4,6 +4,8 @@ const app = express();
 const port = process.env.PORT || 3001;
 const cors = require("cors");
 const db = require("./db/queries");
+const jwt = require("jsonwebtoken");
+const accessTokenSecret = require("./accessTokenSecret");
 
 app.use(cors());
 app.use(express.json());
@@ -47,10 +49,25 @@ const uploadImgToAmazon = multer({
 });
 //end Amazon
 
+const authenticateJWT = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split(" ")[1];
+        jwt.verify(token, accessTokenSecret, (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+            next();
+        });
+    } else {
+        res.sendStatus(401);
+    }
+};
+
 app.post("/api/login", db.login);
 app.post("/api/createAccount", uploadImgToAmazon.single("img"), db.createUser);
-app.post("/api/sendMessage", db.sendMessage);
-app.get("/api/getMessages", db.getMessages);
+app.post("/api/sendMessage", authenticateJWT, db.sendMessage);
+app.get("/api/getMessages", authenticateJWT, db.getMessages);
 app.post("/api/addItem", uploadImgToAmazon.array("images", 5), db.addItem);
 app.get("/api/getItems", db.getItems);
 
