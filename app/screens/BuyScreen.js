@@ -26,7 +26,7 @@ function BuyScreen({ navigation }) {
                 <ScrollView>
                     <Text style={styles.title}>Order conformation</Text>
                     <OrderTable items={cart} />
-                    <Text style={{ marginTop: 10, marginLeft: 10 }}>Long press on item to remove it from the list</Text>
+                    <Text style={{ marginTop: 10, marginLeft: 10 }}>Long press on item to remove</Text>
                     <DeliveryInfo navigation={navigation} />
                 </ScrollView>
             ) : (

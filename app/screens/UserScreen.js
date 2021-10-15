@@ -23,7 +23,9 @@ function UserScreen({ navigation }) {
             <Text style={{ fontSize: 20, marginTop: 20 }} onPress={() => navigation.navigate("MessagesScreen")}>
                 My messages - ({messages ? messages.incoming.length + messages.outgoing.length : 0})
             </Text>
-            <Text style={{ fontSize: 20, marginTop: 20 }}>My selling items</Text>
+            <Text style={{ fontSize: 20, marginTop: 20 }} onPress={() => navigation.navigate("MySellingItems")}>
+                My selling items
+            </Text>
             <Text style={{ fontSize: 20, marginTop: 20 }}>My purchased items</Text>
         </View>
     );

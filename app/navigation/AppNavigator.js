@@ -8,6 +8,7 @@ import MessageSentSuccessfully from "../screens/MessageSentSuccessfully";
 import MessagesScreen from "../screens/MessagesScreen";
 import ItemAddedSuccessfully from "../screens/ItemAddedSuccessfully";
 import OrderSentSuccessfully from "../screens/OrderSentSuccessfully";
+import MySellingItems from "../screens/MySellingItems";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ const AppNavigator = () => {
             <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
             <Stack.Screen name="ItemAddedSuccessfully" component={ItemAddedSuccessfully} />
             <Stack.Screen name="OrderSentSuccessfully" component={OrderSentSuccessfully} />
+            <Stack.Screen name="MySellingItems" component={MySellingItems} />
         </Stack.Navigator>
     );
 };

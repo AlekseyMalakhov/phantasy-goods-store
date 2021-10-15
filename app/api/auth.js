@@ -1,4 +1,4 @@
-import client from "./client";
+import client, { createAuthClient } from "./client";
 import * as SecureStore from "expo-secure-store";
 import jwtDecode from "jwt-decode";
 import { store } from "../store/store";
@@ -41,6 +41,7 @@ const login = (data) => {
             const token = response.data;
             storeToken(token);
             dispatch(changeAccessToken(token));
+            createAuthClient(token);
             const user = jwtDecode(token);
             dispatch(changeUser(user));
             messagesAPI.getMessages(user.id);

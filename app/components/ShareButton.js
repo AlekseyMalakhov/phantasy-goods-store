@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 45,
         height: 37,
+        opacity: 0, //turn it off  - it's not implemented yet
     },
     share: {
         color: colors.textLight,

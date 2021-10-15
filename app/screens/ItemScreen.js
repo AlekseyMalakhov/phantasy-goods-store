@@ -65,7 +65,9 @@ function ItemScreen({ route, navigation }) {
                 <ImageCarousel images={item.images} />
                 <View style={{ paddingHorizontal: 20 }}>
                     <Text style={{ marginBottom: 10, marginTop: 10 }}>{item.description}</Text>
-                    <Text style={styles.seller}>{item.seller.name}</Text>
+                    <Text style={styles.seller} onPress={() => navigation.navigate("WriteMessageScreen", { seller: item.seller })}>
+                        {item.seller.name}
+                    </Text>
                     <View style={styles.action}>
                         <Text style={styles.price}>{item.price + "$"}</Text>
                         <View style={{ flexDirection: "row" }}>

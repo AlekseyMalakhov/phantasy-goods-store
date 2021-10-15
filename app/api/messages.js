@@ -1,17 +1,17 @@
-import client from "./client";
+import { authClient } from "./client";
 import { store } from "../store/store";
 import { changeMessages } from "../store/user";
 
 const dispatch = store.dispatch;
 
 const getMessages = (userId) => {
-    client.get("/getMessages?userId=" + userId).then((response) => {
+    authClient.get("/getMessages?userId=" + userId).then((response) => {
         dispatch(changeMessages(response.data));
     });
 };
 
 const sendMessage = (data) => {
-    return client
+    return authClient
         .post("/sendMessage", data)
         .then((response) => {
             return response.status;

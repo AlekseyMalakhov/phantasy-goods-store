@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 function WriteMessageScreen({ route, navigation }) {
     const linkTo = useLinkTo();
 
-    const { item } = route.params;
+    const { seller } = route.params;
     const user = useSelector((state) => state.user.user);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
@@ -58,7 +58,7 @@ function WriteMessageScreen({ route, navigation }) {
     const handleSubmit = () => {
         const messageObj = {
             fromId: user.id,
-            toId: item.seller.id,
+            toId: seller.id,
             text: message,
             date: Date.now(),
         };
@@ -86,7 +86,7 @@ function WriteMessageScreen({ route, navigation }) {
             <React.Fragment>
                 <LoadingIndicator visible={loading} />
                 <View style={styles.container}>
-                    <Text style={styles.title}>Send message to {item.seller.name}</Text>
+                    <Text style={styles.title}>Send message to {seller.name}</Text>
                     {error ? (
                         <Text style={styles.error}>
                             Some error occurred.Message could not be sent. Please try again later or contact administrator.

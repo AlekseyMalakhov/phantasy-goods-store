@@ -78,6 +78,7 @@ const sendMessage = async (req, res) => {
 };
 
 const getMessages = async (req, res) => {
+    console.log(req);
     const userId = req.query.userId;
     const outgoingMessagesQuery = {
         text: `SELECT messages.id, from_id, to_id, text, date, name AS to_id_name, type 

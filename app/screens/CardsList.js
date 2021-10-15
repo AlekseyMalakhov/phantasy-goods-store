@@ -19,10 +19,12 @@ const styles = StyleSheet.create({
     },
 });
 
-function CardsList({ navigation }) {
+function CardsList({ navigation, userItems }) {
     const items = useSelector((state) => state.items.items);
     const loading = useSelector((state) => state.items.loadingAnimation);
     const error = useSelector((state) => state.items.error);
+
+    console.log(userItems);
 
     return (
         <React.Fragment>
