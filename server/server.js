@@ -68,7 +68,7 @@ app.post("/api/login", db.login);
 app.post("/api/createAccount", uploadImgToAmazon.single("img"), db.createUser);
 app.post("/api/sendMessage", authenticateJWT, db.sendMessage);
 app.get("/api/getMessages", authenticateJWT, db.getMessages);
-app.post("/api/addItem", uploadImgToAmazon.array("images", 5), db.addItem);
+app.post("/api/addItem", authenticateJWT, uploadImgToAmazon.array("images", 5), db.addItem);
 app.get("/api/getItems", db.getItems);
 
 //start the server

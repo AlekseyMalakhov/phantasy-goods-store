@@ -1,11 +1,12 @@
 import client from "./client";
+import { authClient } from "./client";
 import { store } from "../store/store";
 import { changeItems, changeLoadingAnimation, changeError } from "../store/items";
 
 const dispatch = store.dispatch;
 
 const addItem = (formData) => {
-    return client
+    return authClient
         .post("/addItem", formData, { headers: { "Content-Type": "multipart/form-data" } })
         .then((response) => {
             return response.status;
