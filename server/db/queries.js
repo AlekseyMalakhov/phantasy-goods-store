@@ -53,7 +53,7 @@ const login = async (req, res) => {
         }
         const sendUser = { ...user };
         delete sendUser.password;
-        const token = jwt.sign(sendUser, accessTokenSecret);
+        const token = jwt.sign(sendUser, accessTokenSecret, { expiresIn: "1m" });
         res.status(200).send(token);
     } catch (error) {
         res.status(500).send(error.stack);
