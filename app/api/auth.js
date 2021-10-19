@@ -4,6 +4,7 @@ import jwtDecode from "jwt-decode";
 import { store } from "../store/store";
 import { changeAccessToken, changeUser } from "../store/user";
 import messagesAPI from "./messages";
+import { changeLoadingAnimation, changeError } from "../store/items";
 
 const dispatch = store.dispatch;
 
@@ -32,6 +33,35 @@ const removeToken = async () => {
     } catch (error) {
         console.log(error);
     }
+};
+
+const refreshToken = () => {
+    dispatch(changeLoadingAnimation(true));
+    dispatch(changeError(""));
+    client
+        .get("/refreshToken")
+        .then((response) => {
+            dispatch(changeLoadingAnimation(false));
+            if (response.status === 200) {
+                console.log("new token is " + response.data);
+                //dispatch(changeItems(response.data));
+            } else {
+                dispatch(changeError("Some error occurred. Please try later"));
+            }
+        })
+        .catch((err) => {
+            dispatch(changeLoadingAnimation(false));
+            dispatch(changeError("Some error occurred. Please try later"));
+            console.log(err.message);
+        });
+};
+
+const checkExpired = (token) => {
+    const { exp } = jwtDecode(token);
+    if (Date.now() >= exp * 1000) {
+        return true;
+    }
+    return false;
 };
 
 const startUser = (token) => {
@@ -77,6 +107,8 @@ const authAPI = {
     createAccount,
     startUser,
     getToken,
+    checkExpired,
+    refreshToken,
 };
 
 export default authAPI;

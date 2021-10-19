@@ -163,6 +163,12 @@ const getItems = async (req, res) => {
     }
 };
 
+const refreshToken = (req, res) => {
+    console.log("Give me a new token, pls");
+    const token = jwt.sign({ fuck: "fuck you" }, accessTokenSecret, { expiresIn: "100m" });
+    res.status(200).send(token);
+};
+
 module.exports = {
     createUser,
     login,
@@ -170,4 +176,5 @@ module.exports = {
     getMessages,
     addItem,
     getItems,
+    refreshToken,
 };

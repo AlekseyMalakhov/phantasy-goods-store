@@ -23,7 +23,15 @@ export default function App() {
         authAPI.getToken().then((token) => {
             //console.log(token);
             if (token) {
-                authAPI.startUser(token);
+                //if token.expired => get new token using refresh token
+
+                if (authAPI.checkExpired(token)) {
+                    console.log("get new token");
+                    authAPI.refreshToken();
+                } else {
+                    console.log("good token");
+                    authAPI.startUser(token);
+                }
             }
         });
     }, []);

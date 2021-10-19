@@ -70,6 +70,7 @@ app.post("/api/sendMessage", authenticateJWT, db.sendMessage);
 app.get("/api/getMessages", authenticateJWT, db.getMessages);
 app.post("/api/addItem", authenticateJWT, uploadImgToAmazon.array("images", 5), db.addItem);
 app.get("/api/getItems", db.getItems);
+app.get("/api/refreshToken", db.refreshToken);
 
 //start the server
 app.listen(port, () => {
