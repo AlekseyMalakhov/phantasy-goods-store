@@ -62,7 +62,6 @@ function LoginScreen({ navigation }) {
         authAPI
             .login(data)
             .then((resp) => {
-                console.log(resp);
                 if (mounted.current) {
                     setLoading(false);
                 }
@@ -77,7 +76,7 @@ function LoginScreen({ navigation }) {
             .catch((err) => {
                 setLoading(false);
                 setError("Some error occurred. Please try later");
-                console.log(err.message);
+                console.log(err);
             });
     };
 

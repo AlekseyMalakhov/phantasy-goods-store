@@ -66,7 +66,7 @@ function DeliveryInfo({ navigation }) {
     const reset = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "Items" }],
+            routes: [{ name: "AppNavigator" }],
         });
     };
 

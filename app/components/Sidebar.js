@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import AppHeader from "./AppHeader";
@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from "@react-navigation/drawer";
 import authAPI from "../api/auth";
 import { Avatar } from "react-native-elements";
+import CardsList from "../screens/CardsList";
 
 const styles = StyleSheet.create({
     container: {},
@@ -35,7 +36,7 @@ function Sidebar(props) {
 
     return (
         <Drawer.Navigator
-            initialRouteName="Items"
+            initialRouteName="AppNavigator"
             screenOptions={{
                 headerShown: true,
                 header: ({ navigation, route, options }) => <AppHeader navigation={navigation} />,
@@ -58,8 +59,15 @@ function Sidebar(props) {
                         ),
                 }}
             />
-            <Drawer.Screen name="Items" component={AppNavigator} />
+            <Drawer.Screen name="Items" component={CardsList} />
             <Drawer.Screen name="CreateItemScreen" component={CreateItemScreen} options={{ title: "Add item to sell" }} />
+            <Drawer.Screen
+                name="AppNavigator"
+                component={AppNavigator}
+                options={{
+                    drawerItemStyle: { display: "none" },
+                }}
+            />
         </Drawer.Navigator>
     );
 }

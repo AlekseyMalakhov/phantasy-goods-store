@@ -6,6 +6,7 @@ import Sidebar from "./app/components/Sidebar";
 import { store } from "./app/store/store";
 import { Provider } from "react-redux";
 import itemsAPI from "./app/api/items";
+import authAPI from "./app/api/auth";
 
 const styles = StyleSheet.create({
     // container: {
@@ -19,6 +20,12 @@ const styles = StyleSheet.create({
 export default function App() {
     useEffect(() => {
         itemsAPI.getItems();
+        authAPI.getToken().then((token) => {
+            //console.log(token);
+            if (token) {
+                authAPI.startUser(token);
+            }
+        });
     }, []);
 
     return (

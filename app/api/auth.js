@@ -7,7 +7,7 @@ import messagesAPI from "./messages";
 
 const dispatch = store.dispatch;
 
-const key = "authToken";
+const key = "authToken_phantasy-goods-store";
 
 const storeToken = async (authToken) => {
     try {
@@ -34,20 +34,24 @@ const removeToken = async () => {
     }
 };
 
+const startUser = (token) => {
+    dispatch(changeAccessToken(token));
+    createAuthClient(token);
+    const user = jwtDecode(token);
+    dispatch(changeUser(user));
+    messagesAPI.getMessages(user.id);
+};
+
 const login = (data) => {
     return client
         .post("/login", data)
         .then((response) => {
             const token = response.data;
             storeToken(token);
-            dispatch(changeAccessToken(token));
-            createAuthClient(token);
-            const user = jwtDecode(token);
-            dispatch(changeUser(user));
-            messagesAPI.getMessages(user.id);
+            startUser(token);
             return response.status;
         })
-        .catch((error) => error);
+        .catch((error) => error.response.status);
 };
 
 const logout = () => {
@@ -62,15 +66,17 @@ const createAccount = (formData) => {
         .then((response) => {
             return response.status;
         })
-        .catch((error) => error);
+        .catch((error) => error.response.status);
 };
 
-login({ email: "jim@test.com", password: "12345" });
+//login({ email: "jim@test.com", password: "12345" });
 
 const authAPI = {
     login,
     logout,
     createAccount,
+    startUser,
+    getToken,
 };
 
 export default authAPI;

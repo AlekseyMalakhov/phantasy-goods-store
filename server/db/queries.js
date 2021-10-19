@@ -49,11 +49,11 @@ const login = async (req, res) => {
         const response1 = await pool.query(query1);
         const user = response1.rows[0];
         if (!user || user.password !== password) {
-            return res.status(401).send({ error: "Invalid email or password." });
+            return res.status(401).send("Invalid email or password.");
         }
         const sendUser = { ...user };
         delete sendUser.password;
-        const token = jwt.sign(sendUser, accessTokenSecret, { expiresIn: "1m" });
+        const token = jwt.sign(sendUser, accessTokenSecret, { expiresIn: "100m" });
         res.status(200).send(token);
     } catch (error) {
         res.status(500).send(error.stack);
