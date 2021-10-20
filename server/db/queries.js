@@ -1,6 +1,6 @@
 const Pool = require("pg").Pool;
 const jwt = require("jsonwebtoken");
-const accessTokenSecret = require("../accessTokenSecret");
+const { accessTokenSecret, refreshTokenSecret } = require("../tokenSecret");
 
 const connectionString = "postgres://zrhjogpc:RKMN42zFlEorpu5PbVPxzCsg_U5jInQZ@hattie.db.elephantsql.com/zrhjogpc";
 const pool = new Pool({ connectionString });
@@ -53,8 +53,10 @@ const login = async (req, res) => {
         }
         const sendUser = { ...user };
         delete sendUser.password;
-        const token = jwt.sign(sendUser, accessTokenSecret, { expiresIn: "100m" });
-        res.status(200).send(token);
+        const accessToken = jwt.sign(sendUser, accessTokenSecret, { expiresIn: "2m" });
+        const refreshToken = jwt.sign(sendUser, refreshTokenSecret, { expiresIn: "100m" });
+        const tokens = { accessToken, refreshToken };
+        res.status(200).send(tokens);
     } catch (error) {
         res.status(500).send(error.stack);
         console.log(error.stack);
@@ -164,9 +166,20 @@ const getItems = async (req, res) => {
 };
 
 const refreshToken = (req, res) => {
-    console.log("Give me a new token, pls");
-    const token = jwt.sign({ fuck: "fuck you" }, accessTokenSecret, { expiresIn: "100m" });
-    res.status(200).send(token);
+    const { refreshToken } = req.body;
+    jwt.verify(refreshToken, refreshTokenSecret, (err, decoded) => {
+        if (err) {
+            return res.sendStatus(403);
+        }
+        const user = {
+            id: decoded.id,
+            name: decoded.name,
+            email: decoded.email,
+            img: decoded.img,
+        };
+        const accessToken = jwt.sign(user, accessTokenSecret, { expiresIn: "2m" });
+        res.status(200).send(accessToken);
+    });
 };
 
 module.exports = {

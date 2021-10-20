@@ -8,43 +8,49 @@ import { changeLoadingAnimation, changeError } from "../store/items";
 
 const dispatch = store.dispatch;
 
-const key = "authToken_phantasy-goods-store";
+const accessTokenKey = "accessToken_phantasy-goods-store";
+const refreshTokenKey = "refreshToken_phantasy-goods-store";
 
-const storeToken = async (authToken) => {
+const storeTokens = async (tokens) => {
     try {
-        await SecureStore.setItemAsync(key, authToken);
+        await SecureStore.setItemAsync(accessTokenKey, tokens.accessToken);
+        await SecureStore.setItemAsync(refreshTokenKey, tokens.refreshToken);
     } catch (error) {
         console.log(error);
     }
 };
 
-const getToken = async () => {
+const getTokens = async () => {
     try {
-        const authToken = await SecureStore.getItemAsync(key);
-        return authToken;
+        const accessToken = await SecureStore.getItemAsync(accessTokenKey);
+        const refreshToken = await SecureStore.getItemAsync(refreshTokenKey);
+        const tokens = { accessToken, refreshToken };
+        return tokens;
     } catch (error) {
         console.log(error);
     }
 };
 
-const removeToken = async () => {
+const removeTokens = async () => {
     try {
-        await SecureStore.deleteItemAsync(key);
+        await SecureStore.deleteItemAsync(accessTokenKey);
+        await SecureStore.deleteItemAsync(refreshTokenKey);
     } catch (error) {
         console.log(error);
     }
 };
 
-const refreshToken = () => {
+const refreshToken = (refreshToken) => {
     dispatch(changeLoadingAnimation(true));
     dispatch(changeError(""));
     client
-        .get("/refreshToken")
-        .then((response) => {
+        .post("/refreshToken", { refreshToken })
+        .then(async (response) => {
             dispatch(changeLoadingAnimation(false));
             if (response.status === 200) {
-                console.log("new token is " + response.data);
-                //dispatch(changeItems(response.data));
+                dispatch(changeAccessToken(response.data));
+                console.log(response.data);
+                await SecureStore.setItemAsync(accessTokenKey, response.data);
             } else {
                 dispatch(changeError("Some error occurred. Please try later"));
             }
@@ -64,10 +70,10 @@ const checkExpired = (token) => {
     return false;
 };
 
-const startUser = (token) => {
-    dispatch(changeAccessToken(token));
-    createAuthClient(token);
-    const user = jwtDecode(token);
+const startUser = (accessToken) => {
+    dispatch(changeAccessToken(accessToken));
+    createAuthClient(accessToken);
+    const user = jwtDecode(accessToken);
     dispatch(changeUser(user));
     messagesAPI.getMessages(user.id);
 };
@@ -76,16 +82,16 @@ const login = (data) => {
     return client
         .post("/login", data)
         .then((response) => {
-            const token = response.data;
-            storeToken(token);
-            startUser(token);
+            const tokens = response.data;
+            storeTokens(tokens);
+            startUser(tokens.accessToken);
             return response.status;
         })
         .catch((error) => error.response.status);
 };
 
 const logout = () => {
-    removeToken();
+    removeTokens();
     dispatch(changeAccessToken(""));
     dispatch(changeUser(null));
 };
@@ -106,7 +112,7 @@ const authAPI = {
     logout,
     createAccount,
     startUser,
-    getToken,
+    getTokens,
     checkExpired,
     refreshToken,
 };

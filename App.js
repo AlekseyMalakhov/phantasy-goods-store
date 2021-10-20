@@ -8,29 +8,19 @@ import { Provider } from "react-redux";
 import itemsAPI from "./app/api/items";
 import authAPI from "./app/api/auth";
 
-const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    //     backgroundColor: "#fff",
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    // },
-});
+const styles = StyleSheet.create({});
 
 export default function App() {
     useEffect(() => {
         itemsAPI.getItems();
-        authAPI.getToken().then((token) => {
-            //console.log(token);
-            if (token) {
-                //if token.expired => get new token using refresh token
-
-                if (authAPI.checkExpired(token)) {
-                    console.log("get new token");
-                    authAPI.refreshToken();
+        authAPI.getTokens().then((tokens) => {
+            if (tokens.accessToken) {
+                if (authAPI.checkExpired(tokens.accessToken)) {
+                    console.log("old token");
+                    authAPI.refreshToken(tokens.refreshToken);
                 } else {
                     console.log("good token");
-                    authAPI.startUser(token);
+                    authAPI.startUser(tokens.accessToken);
                 }
             }
         });

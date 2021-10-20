@@ -5,7 +5,7 @@ const port = process.env.PORT || 3001;
 const cors = require("cors");
 const db = require("./db/queries");
 const jwt = require("jsonwebtoken");
-const accessTokenSecret = require("./accessTokenSecret");
+const { accessTokenSecret } = require("./tokenSecret");
 
 app.use(cors());
 app.use(express.json());
@@ -70,7 +70,7 @@ app.post("/api/sendMessage", authenticateJWT, db.sendMessage);
 app.get("/api/getMessages", authenticateJWT, db.getMessages);
 app.post("/api/addItem", authenticateJWT, uploadImgToAmazon.array("images", 5), db.addItem);
 app.get("/api/getItems", db.getItems);
-app.get("/api/refreshToken", db.refreshToken);
+app.post("/api/refreshToken", db.refreshToken);
 
 //start the server
 app.listen(port, () => {
