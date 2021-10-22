@@ -6,6 +6,7 @@ import messagesAPI from "../api/messages";
 import { useSelector } from "react-redux";
 import { useLinkTo } from "@react-navigation/native";
 import LoadingIndicator from "../components/LoadingIndicator";
+import authAPI from "../api/auth";
 
 const styles = StyleSheet.create({
     container: {
@@ -55,7 +56,7 @@ function WriteMessageScreen({ route, navigation }) {
     const [message, setMessage] = useState("");
     const [error, setError] = useState(false);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const messageObj = {
             fromId: user.id,
             toId: seller.id,
@@ -63,22 +64,26 @@ function WriteMessageScreen({ route, navigation }) {
             date: Date.now(),
         };
         setLoading(true);
-        messagesAPI
-            .sendMessage(messageObj)
-            .then((status) => {
-                setLoading(false);
-                if (status === 201) {
-                    setError(false);
-                    navigation.navigate("MessageSentSuccessfully");
-                } else {
+        const tokens = await authAPI.checkTokens();
+        if (tokens) {
+            messagesAPI
+                .sendMessage(messageObj)
+                .then((status) => {
+                    setLoading(false);
+                    if (status === 201) {
+                        setError(false);
+                        messagesAPI.getMessages(user.id);
+                        navigation.navigate("MessageSentSuccessfully");
+                    } else {
+                        setError(true);
+                    }
+                })
+                .catch((err) => {
+                    setLoading(false);
                     setError(true);
-                }
-            })
-            .catch((err) => {
-                setLoading(false);
-                setError(true);
-                console.log(err.message);
-            });
+                    console.log(err.message);
+                });
+        }
     };
 
     if (user) {

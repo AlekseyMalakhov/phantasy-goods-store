@@ -11,19 +11,16 @@ import authAPI from "./app/api/auth";
 const styles = StyleSheet.create({});
 
 export default function App() {
+    const getUser = async () => {
+        const tokens = await authAPI.checkTokens();
+        if (tokens) {
+            authAPI.startUser(tokens.accessToken);
+        }
+    };
+
     useEffect(() => {
         itemsAPI.getItems();
-        authAPI.getTokens().then((tokens) => {
-            if (tokens.accessToken) {
-                if (authAPI.checkExpired(tokens.accessToken)) {
-                    console.log("old token");
-                    authAPI.refreshToken(tokens.refreshToken);
-                } else {
-                    console.log("good token");
-                    authAPI.startUser(tokens.accessToken);
-                }
-            }
-        });
+        getUser();
     }, []);
 
     return (

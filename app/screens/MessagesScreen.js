@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import Message from "../components/Message";
 
@@ -23,11 +23,13 @@ function MessagesScreen(props) {
     }, [messages]);
     return (
         <View style={styles.container}>
-            <Text style={{ fontSize: 20, marginTop: 20 }}>My messages</Text>
-            {messagesList.map((message) => (
-                <Message key={message.id} message={message} />
-            ))}
-            {messagesList.length === 0 ? <Text style={{ marginTop: 20 }}>You don't have any messages</Text> : null}
+            <ScrollView style={{ width: "100%" }}>
+                <Text style={{ fontSize: 20, marginTop: 20, textAlign: "center" }}>My messages</Text>
+                {messagesList.map((message) => (
+                    <Message key={message.id + "_" + message.type} message={message} />
+                ))}
+                {messagesList.length === 0 ? <Text style={{ marginTop: 20, textAlign: "center" }}>You don't have any messages</Text> : null}
+            </ScrollView>
         </View>
     );
 }

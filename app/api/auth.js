@@ -40,26 +40,27 @@ const removeTokens = async () => {
     }
 };
 
-const refreshToken = (refreshToken) => {
+const refreshToken = async (refreshToken) => {
     dispatch(changeLoadingAnimation(true));
     dispatch(changeError(""));
-    client
-        .post("/refreshToken", { refreshToken })
-        .then(async (response) => {
-            dispatch(changeLoadingAnimation(false));
-            if (response.status === 200) {
-                dispatch(changeAccessToken(response.data));
-                console.log(response.data);
-                await SecureStore.setItemAsync(accessTokenKey, response.data);
-            } else {
-                dispatch(changeError("Some error occurred. Please try later"));
-            }
-        })
-        .catch((err) => {
-            dispatch(changeLoadingAnimation(false));
-            dispatch(changeError("Some error occurred. Please try later"));
-            console.log(err.message);
-        });
+    try {
+        const response = await client.post("/refreshToken", { refreshToken });
+        dispatch(changeLoadingAnimation(false));
+        if (response.status === 200) {
+            const accessToken = response.data;
+            dispatch(changeAccessToken(accessToken));
+            createAuthClient(accessToken);
+            await SecureStore.setItemAsync(accessTokenKey, accessToken);
+            return { accessToken, refreshToken };
+        } else {
+            console.log("refreshToken - " + err.message);
+            return false;
+        }
+    } catch (error) {
+        dispatch(changeLoadingAnimation(false));
+        console.log("refreshToken - " + error.message);
+        return false;
+    }
 };
 
 const checkExpired = (token) => {
@@ -107,6 +108,28 @@ const createAccount = (formData) => {
 
 //login({ email: "jim@test.com", password: "12345" });
 
+const checkTokens = async () => {
+    const tokens = await getTokens();
+    console.log(tokens);
+    if (tokens.accessToken) {
+        if (checkExpired(tokens.accessToken)) {
+            console.log("old token");
+            const refreshedTokens = await refreshToken(tokens.refreshToken);
+            if (refreshedTokens) {
+                console.log("token refreshed");
+                return refreshedTokens;
+            }
+            console.log("token NOT refreshed");
+            return false;
+        } else {
+            console.log("good token");
+            return tokens;
+        }
+    } else {
+        return false;
+    }
+};
+
 const authAPI = {
     login,
     logout,
@@ -115,6 +138,7 @@ const authAPI = {
     getTokens,
     checkExpired,
     refreshToken,
+    checkTokens,
 };
 
 export default authAPI;

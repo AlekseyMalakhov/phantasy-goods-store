@@ -53,7 +53,7 @@ const login = async (req, res) => {
         }
         const sendUser = { ...user };
         delete sendUser.password;
-        const accessToken = jwt.sign(sendUser, accessTokenSecret, { expiresIn: "2m" });
+        const accessToken = jwt.sign(sendUser, accessTokenSecret, { expiresIn: "1m" });
         const refreshToken = jwt.sign(sendUser, refreshTokenSecret, { expiresIn: "100m" });
         const tokens = { accessToken, refreshToken };
         res.status(200).send(tokens);
@@ -82,7 +82,7 @@ const sendMessage = async (req, res) => {
 
 const getMessages = async (req, res) => {
     const userId = req.query.userId;
-    const outgoingMessagesQuery = {
+    const incomingMessagesQuery = {
         text: `SELECT messages.id, from_id, to_id, text, date, name AS to_id_name, type 
                 FROM messages 
                 INNER JOIN users ON to_id = users.id 
@@ -90,7 +90,7 @@ const getMessages = async (req, res) => {
                 WHERE from_id = $1`,
         values: [userId],
     };
-    const incomingMessagesQuery = {
+    const outgoingMessagesQuery = {
         text: `SELECT messages.id, from_id, to_id, text, date, name AS from_id_name, type 
                 FROM messages 
                 INNER JOIN users ON from_id = users.id 
@@ -169,6 +169,7 @@ const refreshToken = (req, res) => {
     const { refreshToken } = req.body;
     jwt.verify(refreshToken, refreshTokenSecret, (err, decoded) => {
         if (err) {
+            console.log(err);
             return res.sendStatus(403);
         }
         const user = {
@@ -177,8 +178,9 @@ const refreshToken = (req, res) => {
             email: decoded.email,
             img: decoded.img,
         };
-        const accessToken = jwt.sign(user, accessTokenSecret, { expiresIn: "2m" });
+        const accessToken = jwt.sign(user, accessTokenSecret, { expiresIn: "1m" });
         res.status(200).send(accessToken);
+        console.log("token refreshed");
     });
 };
 
