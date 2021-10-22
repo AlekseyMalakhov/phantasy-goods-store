@@ -110,7 +110,6 @@ const createAccount = (formData) => {
 
 const checkTokens = async () => {
     const tokens = await getTokens();
-    console.log(tokens);
     if (tokens.accessToken) {
         if (checkExpired(tokens.accessToken)) {
             console.log("old token");

@@ -83,6 +83,8 @@ function WriteMessageScreen({ route, navigation }) {
                     setError(true);
                     console.log(err.message);
                 });
+        } else {
+            setError(true);
         }
     };
 

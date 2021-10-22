@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useLinkTo } from "@react-navigation/native";
 import itemsAPI from "../api/items";
 import LoadingIndicator from "../components/LoadingIndicator";
+import authAPI from "../api/auth";
 
 const styles = StyleSheet.create({
     container: {
@@ -65,7 +66,8 @@ function CreateItemScreen({ navigation }) {
     const [error, setError] = useState("");
     const linkTo = useLinkTo();
     const user = useSelector((state) => state.user.user);
-    const submit = (item, actions) => {
+
+    const submit = async (item, actions) => {
         setError("");
         item.seller = user.id;
 
@@ -83,24 +85,29 @@ function CreateItemScreen({ navigation }) {
         }
 
         setLoading(true);
-        itemsAPI
-            .addItem(formData)
-            .then((status) => {
-                console.log(status);
-                setLoading(false);
-                actions.resetForm();
-                if (status === 201) {
-                    itemsAPI.getItems();
-                    navigation.navigate("ItemAddedSuccessfully");
-                } else {
+        const tokens = await authAPI.checkTokens();
+        if (tokens) {
+            itemsAPI
+                .addItem(formData)
+                .then((status) => {
+                    console.log(status);
+                    setLoading(false);
+                    actions.resetForm();
+                    if (status === 201) {
+                        itemsAPI.getItems();
+                        navigation.navigate("ItemAddedSuccessfully");
+                    } else {
+                        setError("Some error occurred. Please try again later");
+                    }
+                })
+                .catch((err) => {
+                    setLoading(false);
                     setError("Some error occurred. Please try again later");
-                }
-            })
-            .catch((err) => {
-                setLoading(false);
-                setError("Some error occurred. Please try again later");
-                console.log(err);
-            });
+                    console.log(err);
+                });
+        } else {
+            setError("Some error occurred. Please try relogin to your account");
+        }
     };
 
     const reset = () => {
