@@ -26,9 +26,10 @@ export default function App() {
     return (
         <Provider store={store}>
             <Screen>
-                <NavigationContainer>
+                <Text style={{ textAlign: "center", fontSize: 30 }}>Hello world</Text>
+                {/* <NavigationContainer>
                     <Sidebar />
-                </NavigationContainer>
+                </NavigationContainer> */}
             </Screen>
         </Provider>
     );
