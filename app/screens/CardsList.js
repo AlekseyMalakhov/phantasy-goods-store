@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import LoadingIndicator from "../components/LoadingIndicator";
 
 const styles = StyleSheet.create({
-    container: {},
     loading: {
         height: "20%",
         width: "20%",
@@ -19,16 +18,26 @@ const styles = StyleSheet.create({
     },
 });
 
-function CardsList({ navigation, userItems }) {
+function CardsList({ navigation, itemsForUser }) {
     const items = useSelector((state) => state.items.items);
     const loading = useSelector((state) => state.items.loadingAnimation);
     const error = useSelector((state) => state.items.error);
+
+    const getItems = () => {
+        if (items.length > 0) {
+            if (!itemsForUser) {
+                return items;
+            }
+            return items.filter((item) => item.seller.id === itemsForUser);
+        }
+        return [];
+    };
 
     return (
         <React.Fragment>
             {error ? <Text style={styles.error}>{error}</Text> : null}
             <FlatList
-                data={items.length > 0 ? items : []}
+                data={getItems()}
                 renderItem={({ item }) => <AppCard item={item} navigation={navigation} />}
                 keyExtractor={(item) => item.id.toString()}
             />
