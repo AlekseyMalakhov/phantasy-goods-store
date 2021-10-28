@@ -1,4 +1,4 @@
-import { Constants } from "expo-constants";
+import Constants from "expo-constants";
 
 const settings = {
     dev: "http://192.168.100.7:3001/api",
